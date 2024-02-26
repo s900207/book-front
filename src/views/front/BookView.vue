@@ -45,16 +45,36 @@ VContainer
           h3 書評:
           VList
             VListItem(v-for="review in books.reviews" :key="review._id")
-              VListItemTitle {{ review.usersId.name }}
-              VListItemSubtitle {{ review.comment }}
-              VListItemAction
-                VRating(v-model="review.rating" color="#4d4637 darken-3" readonly)
+              VCard
+                VRow
+                  VCol(cols="auto")
+                    VListItemTitle(:style="{ fontSize: '30px' }") {{ review.user.account }}
+                  VCol(cols="auto")
+                    VListItemAction
+                      VRating(v-model="review.rating" color="#4d4637 darken-3" size="25" readonly)
+                VRow
+                  VCol
+                    VListItemSubtitle.mb-5(:style="{ fontSize: '20px' }") {{ review.comment }}
+                VRow
+                  VCol(cols="auto")
+                    VListItemAction
+                      VBtn(icon="mdi-pencil" color="#4d4637" @click="() => openDialog(review._id)")
+VDialog(v-model="dialog" max-width="290")
+  VForm(:disabled="isSubmitting" @submit.prevent="submit")
+    VCard
+      VCardTitle
+        h3 編輯書評
+      VCardText
+        VRating(v-model="updatedReview.rating" color="#4d4637 darken-3" hover)
+        VTextarea(v-model="updatedReview.comment" label="你的書評" required)
+      VCardActions
+        VBtn(color="#4d4637" @click="editReviews(review)" :loading="isSubmitting") 修正
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useForm } from 'vee-validate'
+import { useField, useForm } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
@@ -71,6 +91,7 @@ const newReview = ref({
   rating: 0,
   comment: ''
 })
+const dialog = ref(false)
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -93,6 +114,12 @@ const books = ref({
   reviews: []
 })
 
+const updatedReview = ref([])
+
+const closeDialog = () => {
+  dialog.value = false
+}
+
 const submit = handleSubmit(async (values) => {
   console.log(newReview.value)
   if (!user.isLogin) {
@@ -109,26 +136,23 @@ const submit = handleSubmit(async (values) => {
     return
   }
   try {
-    if (user && user.user && user.user._id) {
-      const { data } = await apiAuth.post(`/books/${route.params.id}/reviews`, {
-        user: user.user._id,
-        rating: newReview.value.rating,
-        conmment: newReview.value.comment
-      })
+    const { data } = await apiAuth.post(`/books/${route.params.id}/reviews`, {
+      rating: newReview.value.rating,
+      conmment: newReview.value.comment
+    })
 
-      if (data && data.result) {
-        books.value.reviews.push(data.result)
-      }
-      createSnackbar({
-        text: '新增成功',
-        showCloseButton: false,
-        snackbarProps: {
-          timeout: 2000,
-          color: 'green',
-          location: 'bottom'
-        }
-      })
+    if (data && data.result) {
+      books.value.reviews.push(data.result)
     }
+    createSnackbar({
+      text: '新增成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -142,6 +166,53 @@ const submit = handleSubmit(async (values) => {
       }
     })
   }
+})
+
+const openDialog = (reviewId) => {
+  if (reviewId) {
+    const review = books.value.reviews.find(review => review._id === reviewId)
+    console.log(review)
+    updatedReview.value.id = review._id
+    updatedReview.value.rating = review.rating
+    updatedReview.value.comment = review.comment
+  }
+  dialog.value = true
+}
+
+const editReviews = handleSubmit(async (values) => {
+  console.log(updatedReview.value)
+  try {
+    const fd = new FormData()
+    for (const key in values) {
+      fd.append(key, values[key])
+    }
+    if (dialog.value === '') {
+      await apiAuth.patch('/books/' + dialog.value, fd)
+    }
+
+    createSnackbar({
+      text: '編輯成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+  closeDialog()
 })
 
 onMounted(async () => {

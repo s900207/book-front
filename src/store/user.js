@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('')
   const account = ref('')
   const email = ref('')
+  const favorite = ref([])
   const role = ref(UserRole.USER)
 
   const login = (data) => {
@@ -17,6 +18,7 @@ export const useUserStore = defineStore('user', () => {
     account.value = data.account
     email.value = data.email
     role.value = data.role
+    favorite.value = data.favorite
   }
 
   const isLogin = computed(() => {
@@ -53,7 +55,8 @@ export const useUserStore = defineStore('user', () => {
     logout,
     isLogin,
     isAdmin,
-    getProfile
+    getProfile,
+    favorite
   }
 }, {
   persist: {
