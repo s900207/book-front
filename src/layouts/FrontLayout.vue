@@ -52,6 +52,7 @@ const drawer = ref(false)
 // 導覽列項目
 const navItems = computed(() => {
   return [
+    { to: '/mybook', text: '我的書籍', icon: 'mdi-book-account', show: user.isLogin },
     { to: '/article', text: '文章', icon: 'mdi-book', show: true },
     { to: '/import', text: '引入書籍', icon: 'mdi-book-arrow-up', show: user.isLogin },
     { to: '/member', text: '會員管理', icon: 'mdi-cog', show: user.isLogin && !user.isAdmin },

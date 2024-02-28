@@ -9,12 +9,24 @@ const apiAuth = axios.create({
   baseURL: import.meta.env.VITE_API
 })
 
+// 1. 呼叫 axios.get / axios.post 時
+// 2. interceptors.request 請求攔截器
+// 3. 送出請求
+// 4. interceptors.response 回應攔截器
+// 5. 呼叫的地方的 .then() .catch()
 apiAuth.interceptors.request.use(config => {
   const user = useUserStore()
   config.headers.Authorization = 'Bearer ' + user.token
   return config
 })
 
+// 1. apiAuth.get('/users/me')
+// 2-1. 如果不是 JWT 過期錯誤，將 apiAuth.get('/users/me') 的錯誤回傳
+// 2-2. 如果發生 JWT 過期錯誤，進到 3
+// 3. 傳送舊換新請求
+// 3-1. 如果舊換新成功，修改 apiAuth.get('/users/me') 的 jwt 為新的後送出
+// 3-2. 如果舊換新失敗，將 apiAuth.get('/users/me') 的錯誤回傳
+// apiAuth.interceptors.response(成功時執行, 失敗時執行)
 apiAuth.interceptors.response.use((res) => {
   return res
 }, (error) => {

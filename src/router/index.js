@@ -48,6 +48,16 @@ const routes = [
         }
       },
       {
+        path: 'mybook',
+        name: 'Mybook',
+        component: () => import('@/views/front/MybookView.vue'),
+        meta: {
+          title: '書評網 | 我的書籍',
+          login: true,
+          admin: false
+        }
+      },
+      {
         path: 'article',
         name: 'Article',
         component: () => import('@/views/front/ArticleView.vue'),

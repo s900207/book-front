@@ -20,58 +20,60 @@ VContainer
           @click:append="searchBook"
           @keydown.enter="searchBook"
         )
-  VForm(:disabled="isSubmitting" @submit.prevent="submit")
-    VCard
-      VRow.flex.justify-between
-        VCol
-          VCard(
+  VRow
+    VCol.d-flex.justify-center(cols="12")
+      VForm(:disabled="isSubmitting" @submit.prevent="submit")
+        VCard
+          VRow.flex.justify-center.align-center
+            VCol
+              VCard(
               outlined
               class="d-flex justify-center align-center"
             )
-              VImg(
+                VImg(
                 :src="image.value.value"
                 width="300px"
                 cover
                 readonly
               )
-        VCol(class="me-2" )
-          VCardTitle
-          VTextField(
+            VCol(class="me-2" )
+              VCardTitle
+              VTextField(
           label="書本名稱"
           v-model="title.value.value"
           :width="300"
           readonly
         )
-          VTextField(
+              VTextField(
           label="作者"
           v-model="authors.value.value"
           readonly
         )
-          VTextField(
+              VTextField(
           label="出版者"
           v-model="publisher.value.value"
           readonly
         )
-          VTextField(
+              VTextField(
           label="價格"
           v-model="retailPrice.value.value"
           readonly
         )
-          VTextField(
+              VTextField(
           label="分類"
           v-model="categories.value.value"
           readonly
         )
-          VTextarea(
+              VTextarea(
           label="簡介"
           v-model="description.value.value"
           readonly
         )
-          VCardActions
-      VRow.text-center.mb-5(cols="12")
-        VCol
-          VSpacer
-          VBtn(color="green" type="submit" :loading="isSubmitting") 送出
+              VCardActions
+        VRow.text-center.mb-5(cols="12")
+          VCol
+            VSpacer
+            VBtn(color="green" type="submit" :loading="isSubmitting") 送出
   </template>
 
 <script setup>

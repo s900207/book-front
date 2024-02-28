@@ -5,7 +5,7 @@ VContainer
       VImg(:src="books.image")
       VCol.d-flex.justify-space-between
         VBtn.mt-5(color="#4d4637" dark :href="books.buyLink" target="_blank") 購買介面
-        VBtn.mt-3(icon="mdi-heart-plus" )
+        VBtn.text-right(:icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite" )
     VCol(cols="12" md="9")
       h1 {{ books.title }}
       h2 {{ books.authors }}
@@ -53,10 +53,9 @@ VContainer
                     VListItemAction
                       VRating(v-model="review.rating" color="#4d4637 darken-3" size="25" readonly)
                 VRow
-                  VCol
-                    VListItemSubtitle.mb-5(:style="{ fontSize: '20px' }") {{ review.comment }}
-                VRow
                   VCol(cols="auto")
+                    VListItemSubtitle.mb-5(:style="{ fontSize: '20px' }") {{ review.comment }}
+                  VCol.d-flex.justify-end
                     VListItemAction
                       VBtn(icon="mdi-pencil" color="#4d4637" @click="() => openDialog(review._id)")
 VDialog(v-model="dialog" max-width="290")
@@ -74,7 +73,7 @@ VDialog(v-model="dialog" max-width="290")
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useField, useForm } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
@@ -92,7 +91,7 @@ const newReview = ref({
   comment: ''
 })
 const dialog = ref(false)
-
+const isFavorite = ref(false)
 const { handleSubmit } = useForm({
   initialValues: {
     usersId: '',
@@ -171,10 +170,11 @@ const submit = handleSubmit(async (values) => {
 const openDialog = (reviewId) => {
   if (reviewId) {
     const review = books.value.reviews.find(review => review._id === reviewId)
-    console.log(review)
     updatedReview.value.id = review._id
     updatedReview.value.rating = review.rating
     updatedReview.value.comment = review.comment
+    updatedReview.value.bookId = books.value._id
+    console.log(updatedReview.value.bookId)
   }
   dialog.value = true
 }
@@ -184,10 +184,10 @@ const editReviews = handleSubmit(async (values) => {
   try {
     const fd = new FormData()
     for (const key in values) {
-      fd.append(key, values[key])
+      fd.append(key, updatedReview.value[key])
     }
     if (dialog.value === '') {
-      await apiAuth.patch('/books/' + dialog.value, fd)
+      await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
     }
 
     createSnackbar({
@@ -237,4 +237,5 @@ onMounted(async () => {
     console.log(error)
   }
 })
+
 </script>
