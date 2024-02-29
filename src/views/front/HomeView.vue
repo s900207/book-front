@@ -23,7 +23,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
 
-const { api } = useApi()
+const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
 const books = ref([])
@@ -32,7 +32,7 @@ const showAll = ref(false)
 
 const fetchBooks = async () => {
   try {
-    const { data } = await api.get('/books', {
+    const { data } = await apiAuth.get('/books', {
       params: {
         search: searchTerm.value
       }
