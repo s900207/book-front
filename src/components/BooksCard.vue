@@ -80,6 +80,7 @@ const addFavorite = async () => {
 }
 
 onMounted(async () => {
+  if (!user.isLogin) return
   isFavorite.value = await checkFavoriteStatus()
 })
 const checkFavoriteStatus = async () => {

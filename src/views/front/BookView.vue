@@ -174,22 +174,17 @@ const openDialog = (reviewId) => {
     updatedReview.value.rating = review.rating
     updatedReview.value.comment = review.comment
     updatedReview.value.bookId = books.value._id
-    console.log(updatedReview.value.bookId)
+    // console.log(updatedReview.value.bookId)
   }
   dialog.value = true
 }
 
-const editReviews = handleSubmit(async (values) => {
+const editReviews = handleSubmit(async () => {
   console.log(updatedReview.value)
   try {
-    const fd = new FormData()
-    for (const key in values) {
-      fd.append(key, updatedReview.value[key])
-    }
     if (dialog.value === '') {
-      await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
+      await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, updatedReview.value)
     }
-
     createSnackbar({
       text: '編輯成功',
       showCloseButton: false,

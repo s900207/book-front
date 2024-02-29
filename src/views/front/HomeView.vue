@@ -37,6 +37,7 @@ const fetchBooks = async () => {
         search: searchTerm.value
       }
     })
+    console.log(data.result.data)
     books.value = showAll.value ? data.result.data : data.result.data.filter(book => book.maturityRating === 'NOT_MATURE')
     await nextTick()
     gsap
