@@ -37,10 +37,18 @@ const fetchBooks = async () => {
         search: searchTerm.value
       }
     })
-    books.value = showAll.value ? data.result.data : data.result.data.filter(book => book.maturityRating === 'NOT_MATURE')
+
+    const filteredBooks = data.result.data.reduce((acc, book) => {
+      if (showAll.value || book.maturityRating === 'NOT_MATURE') {
+        acc.push(book)
+      }
+      return acc
+    }, [])
+
+    books.value = filteredBooks
+
     await nextTick()
-    gsap
-      .to('.books-card', { opacity: 1, duration: 0.5 })
+    gsap.to('.books-card', { opacity: 1, duration: 0.5 })
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -55,6 +63,7 @@ const fetchBooks = async () => {
     })
   }
 }
+
 
 onMounted(fetchBooks)
 
