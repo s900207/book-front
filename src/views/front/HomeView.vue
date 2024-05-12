@@ -65,7 +65,15 @@ const fetchBooks = async () => {
 }
 
 
-onMounted(fetchBooks)
+onMounted(() => {
+  const link = document.createElement('link')
+  link.rel = 'prefetch'
+  link.href = 'https://font-url.woff'
+  link.as = 'font'
+  document.head.appendChild(link)
+
+  fetchBooks()
+})
 
 watch([searchTerm, showAll], fetchBooks)
 
