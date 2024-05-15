@@ -64,14 +64,7 @@ const fetchBooks = async () => {
   }
 }
 
-
 onMounted(() => {
-  const link = document.createElement('link')
-  link.rel = 'prefetch'
-  link.href = 'https://font-url.woff'
-  link.as = 'font'
-  document.head.appendChild(link)
-
   fetchBooks()
 })
 
