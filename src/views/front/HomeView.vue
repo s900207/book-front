@@ -35,7 +35,8 @@ const fetchBooks = async () => {
     const { data } = await api.get('/books', {
       params: {
         search: searchTerm.value
-      }
+      },
+      preload: false
     })
 
     const filteredBooks = data.result.data.reduce((acc, book) => {
