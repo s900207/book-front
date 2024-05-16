@@ -47,8 +47,6 @@ const fetchBooks = async () => {
 
     books.value = filteredBooks
 
-    await nextTick()
-    gsap.to('.books-card', { opacity: 1, duration: 0.5 })
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -70,9 +68,11 @@ onMounted(() => {
 
 watch([searchTerm, showAll], fetchBooks)
 
+watch(books, () => {
+  // 在书籍数据更新后，执行动画效果
+  nextTick(() => {
+    gsap.to('.books-card', { opacity: 1, duration: 0.5 })
+  })
+})
 </script>
 
-  <style scoped lang="sass">
-  .books-card
-    opacity: 0
-  </style>
