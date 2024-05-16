@@ -29,6 +29,11 @@ const createSnackbar = useSnackbar()
 const books = ref([])
 const searchTerm = ref('')
 const showAll = ref(false)
+const fireFoxes = localFont({
+  src: "../public/FireFoxesDemoRegular.ttf",
+  variable: "--font-secondary",
+  preload: false,
+})
 
 const fetchBooks = async () => {
   try {
@@ -67,8 +72,6 @@ const fetchBooks = async () => {
 
 onMounted(() => {
   fetchBooks()
-},{
-  preload: false
 })
 
 watch([searchTerm, showAll], fetchBooks)
