@@ -67,6 +67,8 @@ const fetchBooks = async () => {
 
 onMounted(() => {
   fetchBooks()
+},{
+  preload: false
 })
 
 watch([searchTerm, showAll], fetchBooks)
