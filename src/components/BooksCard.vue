@@ -24,6 +24,7 @@ const user = useUserStore()
 const isFavorite = ref(false)
 const createSnackbar = useSnackbar()
 const router = useRouter()
+const isVisible = ref(false)
 
 const addFavorite = async () => {
   if (!user.isLogin) {
@@ -83,6 +84,7 @@ onMounted(async () => {
   if (user.isLogin) { // 確保用戶已登錄
     isFavorite.value = await checkFavoriteStatus()
   }
+  isVisible.value = true
 })
 
 const checkFavoriteStatus = async () => {
