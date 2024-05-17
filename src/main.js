@@ -12,6 +12,8 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import './assets/styles.css' 
+createApp(App).use(vuetify).mount('#app')
 
 const app = createApp(App)
 
