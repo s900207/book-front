@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', () => {
   const account = ref('')
   const email = ref('')
   const favorite = ref([])
+  const cart = ref(0)
   const role = ref(UserRole.USER)
 
   const login = (data) => {
@@ -19,6 +20,7 @@ export const useUserStore = defineStore('user', () => {
     email.value = data.email
     role.value = data.role
     favorite.value = data.favorite
+    cart.value = data.cart
   }
 
   const isLogin = computed(() => {
@@ -44,12 +46,14 @@ export const useUserStore = defineStore('user', () => {
     account.value = ''
     email.value = ''
     role.value = UserRole.USER
+    cart.value = 0
   }
 
   return {
     token,
     account,
     email,
+    cart,
     role,
     login,
     logout,

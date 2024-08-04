@@ -30,7 +30,7 @@ VContainer
               outlined
               class="d-flex justify-center align-center"
             )
-                VImg(
+              VImg(
                 :src="image.value.value"
                 width="300px"
                 cover
@@ -42,32 +42,31 @@ VContainer
           label="書本名稱"
           v-model="title.value.value"
           :width="300"
-          readonly
+          :error-messages="title.errorMessage.value"
         )
               VTextField(
           label="作者"
           v-model="authors.value.value"
-          readonly
+          :error-messages="authors.errorMessage.value"
         )
               VTextField(
           label="出版者"
           v-model="publisher.value.value"
-          readonly
+          :error-messages="publisher.errorMessage.value"
         )
               VTextField(
           label="價格"
           v-model="retailPrice.value.value"
-          readonly
+          :error-messages="retailPrice.errorMessage.value"
         )
               VTextField(
           label="分類"
           v-model="categories.value.value"
-          readonly
         )
               VTextarea(
           label="簡介"
           v-model="description.value.value"
-          readonly
+          :error-messages="description.errorMessage.value"
         )
               VCardActions
         VRow.text-center.mb-5(cols="12")
@@ -78,6 +77,7 @@ VContainer
 
 <script setup>
 import { ref } from 'vue'
+import * as yup from 'yup'
 import { useField, useForm } from 'vee-validate'
 import axios from 'axios'
 import { useApi } from '@/composables/axios'
@@ -90,7 +90,26 @@ const isMobile = ref(false)
 const isSubmitting = ref(false)
 const isbn = ref('')
 
+const schema = yup.object({
+  title: yup
+    .string()
+    .required('缺少商品名稱'),
+  publisher: yup
+    .string()
+    .required('缺少出版者'),
+  retailPrice: yup
+    .number()
+    .typeError('商品價格格式錯誤')
+    .required('缺少商品價格')
+    .min(0, '商品價格不能小於 0'),
+  description: yup
+    .string()
+    .required('缺少簡介')
+
+})
+
 const { handleSubmit } = useForm({
+  validationSchema: schema,
   initialValues: {
     title: '',
     authors: '',
@@ -163,6 +182,9 @@ const searchBook = async () => {
       categories.value.value = data.items[0].volumeInfo.categories
       description.value.value = data.items[0].volumeInfo.description
       image.value.value = data.items[0].volumeInfo.imageLinks.thumbnail
+        .replace('http://', 'https://')
+        .replace('img=1&zoom=1', 'img=2')
+        .replace('edge=curl', '')
       maturityRating.value.value = data.items[0].volumeInfo.maturityRating
       buyLink.value.value = data.items[0].saleInfo.buyLink
 

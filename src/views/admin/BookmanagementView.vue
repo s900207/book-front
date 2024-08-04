@@ -26,8 +26,26 @@ VContainer
           )
         template(#[`item.image`]="{ item }")
           VImg(:src="item.image")
+        template(#[`item.edit`]="{ item }")
+          VBtn(@click="openDialog(item)") 編輯
         template(#[`item.delete`]="{ item }")
           VBtn(@click="deleteBook(item)") 刪除
+
+      VDialog(v-model="dialog" persistent max-width="600px")
+        VCard
+          VCardTitle 編輯書籍
+          VCardText
+            VForm(ref="editForm")
+              VTextField(v-model="editedBook.title" label="書名" required)
+              VTextField(v-model="editedBook.authors" label="作者" required)
+              VTextField(v-model="editedBook.publisher" label="出版者" required)
+              VTextField(v-model="editedBook.retailPrice" label="價格" required type="number")
+              VTextField(v-model="editedBook.categories" label="分類" required)
+              VTextarea(v-model="editedBook.description" label="簡介" rows="5")
+          VCardActions
+            VSpacer
+            VBtn(color="blue darken-1" text @click="closeDialog") 取消
+            VBtn(color="blue darken-1" text @click="saveEdit") 保存
 </template>
 
 <script setup>
@@ -52,6 +70,7 @@ const tableHeaders = [
   { title: '出版者', align: 'center', sortable: true, key: 'publisher' },
   { title: '價格', align: 'center', sortable: true, key: 'retailPrice' },
   { title: '分類', align: 'center', sortable: true, key: 'categories' },
+  { title: '編輯', align: 'center', sortable: false, key: 'edit' },
   { title: '刪除', align: 'center', sortable: false, key: 'delete' }
 ]
 
@@ -60,6 +79,17 @@ const tableLoading = ref(true)
 const tableItemsLength = ref(0)
 
 const tableSearch = ref('')
+
+const dialog = ref(false)
+const editedBook = ref({
+  _id: '',
+  title: '',
+  authors: '',
+  publisher: '',
+  retailPrice: '',
+  categories: '',
+  description: ''
+})
 
 const tableLoadItems = async () => {
   tableLoading.value = true
@@ -127,5 +157,43 @@ const deleteBook = async (item) => {
 const tableApplySearch = () => {
   tablePage.value = 1
   tableLoadItems()
+}
+
+const openDialog = (item) => {
+  editedBook.value = { ...item }
+  dialog.value = true
+}
+
+const closeDialog = () => {
+  dialog.value = false
+}
+
+const saveEdit = async () => {
+  try {
+    await apiAuth.patch(`/books/${editedBook.value._id}`, editedBook.value)
+    createSnackbar({
+      text: '書籍已成功更新',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+    tableLoadItems()
+    closeDialog()
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '更新書籍時發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
 }
 </script>

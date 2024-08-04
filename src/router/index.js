@@ -52,7 +52,7 @@ const routes = [
         name: 'Mybook',
         component: () => import('@/views/front/MybookView.vue'),
         meta: {
-          title: '書評網 | 我的書籍',
+          title: '書評網 | 我的最愛書籍',
           login: true,
           admin: false
         }
@@ -68,11 +68,21 @@ const routes = [
         }
       },
       {
-        path: 'import',
-        name: 'Import',
-        component: () => import('@/views/front/ImportView.vue'),
+        path: 'cart',
+        name: 'Cart',
+        component: () => import('@/views/front/CartView.vue'),
         meta: {
-          title: '書評網 | 引入書籍',
+          title: '書評網 | 購物車',
+          login: false,
+          admin: false
+        }
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('@/views/front/OrdersView.vue'),
+        meta: {
+          title: '購物網 | 訂單',
           login: true,
           admin: false
         }
@@ -122,40 +132,24 @@ const routes = [
           login: true,
           admin: true
         }
-      }
-    ]
-  },
-  {
-    path: '/member',
-    component: () => import('@/layouts/MemberLayout.vue'),
-    children: [
+      },
       {
-        path: '',
-        name: 'MemberHome',
-        component: () => import('@/views/member/HomeView.vue'),
+        path: 'orders',
+        name: 'AdminOrders',
+        component: () => import('@/views/admin/OrdersView.vue'),
         meta: {
-          title: '購物網 | 會員管理',
+          title: '購物網 | 訂單管理',
           login: true,
-          admin: false
+          admin: true
         }
       },
       {
-        path: 'book',
-        name: 'Bookreview',
-        component: () => import('@/views/member/BookreviewView.vue'),
+        path: 'import',
+        name: 'Import',
+        component: () => import('@/views/admin/ImportView.vue'),
         meta: {
-          title: '購物網 | 書籍管理',
-          login: true,
-          admin: false
-        }
-      },
-      {
-        path: 'follow',
-        name: 'FollowReport',
-        component: () => import('@/views/member/FollowView.vue'),
-        meta: {
-          title: '購物網 | 追隨者管理',
-          login: true,
+          title: '書評網 | 引入書籍',
+          login: false,
           admin: false
         }
       }

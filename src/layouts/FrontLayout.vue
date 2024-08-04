@@ -6,11 +6,14 @@ VNavigationDrawer(v-model="drawer" temporary location="right" v-if="isMobile" st
       VListItem(:to="item.to" v-if="item.show")
         template(#prepend)
           VIcon(:icon="item.icon")
+        template(#append)
+          VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" inline)
         VListItemTitle {{ item.text }}
     VListItem(v-if="user.isLogin" @click="logout")
       template(#prepend)
         VIcon(icon="mdi-logout")
       VListItemTitle 登出
+//-這邊能補登入註冊，並放在望面，導覽列消去
 //- 導覽列
 VAppBar(color="#4d4637")
   VContainer.d-flex.align-center
@@ -24,6 +27,7 @@ VAppBar(color="#4d4637")
     template(v-else)
       template(v-for="item in navItems" :key="item.to")
         VBtn(:to="item.to" :prepend-icon="item.icon" v-if="item.show") {{ item.text }}
+          VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" floating)
       VBtn(prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout") 登出
 //- 頁面內容
 VMain(style="background-color:#f6eee0")
@@ -53,10 +57,10 @@ const drawer = ref(false)
 const navItems = computed(() => {
   return [
     { to: '/mybook', text: '我的書籍', icon: 'mdi-book-account', show: user.isLogin },
-    { to: '/article', text: '文章', icon: 'mdi-book', show: false },
-    { to: '/import', text: '引入書籍', icon: 'mdi-book-arrow-up', show: true },
-    { to: '/member', text: '會員管理', icon: 'mdi-cog', show: user.isLogin && !user.isAdmin },
+    { to: '/article', text: '文章', icon: 'mdi-book', show: true },
     { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
+    { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
+    { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLogin },
     { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin }
   ]

@@ -12,8 +12,8 @@ VContainer
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
       VSwitch(v-model="showAll" label="18+")
   VRow
-    VCol.d-flex.justify-center(cols="12" md="4" lg="2" v-for="books in books" :key="books._id")
-      BooksCard(v-bind="books" v-lazy)
+    VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
+      BooksCard(v-bind="books")
 </template>
 
 <script setup>
@@ -35,8 +35,7 @@ const fetchBooks = async () => {
     const { data } = await api.get('/books', {
       params: {
         search: searchTerm.value
-      },
-      preload: false
+      }
     })
 
     const filteredBooks = data.result.data.reduce((acc, book) => {

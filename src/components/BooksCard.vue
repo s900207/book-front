@@ -1,13 +1,22 @@
 <template lang="pug">
-VCard.books-card( width="250px" height="350px")
-  VImg(:src="image" height="250px")
+VCard.books-card( width="250px" height="370px")
+  RouterLink(:to="'/books/' + _id")
+    VImg(:src="image" height="250px")
   VCardTitle
-    RouterLink.text-primary.text-decoration-none(:to="'/books/' + _id" :title="title") {{ title}}
+    RouterLink.text-primary.text-decoration-none(:to="'/books/' + _id" :title="title" :style="{fontWeight: 'bold'}") {{ title}}
   VRow.justify-space-between
-    VCol(cols="auto")
+    VCol(cols="6")
       VCardSubtitle.text-left(style="width:170px" v-bind:title="authors") {{ authors }}
-    VCol(cols="auto")
-      VBtn.text-right(:icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite" )
+    VCol.text-right(cols="6")
+      VCardSubtitle
+        | $
+        span(:style="{ fontSize: '1.5em', color: '#750000' ,fontWeight: 'bold'}") {{ retailPrice }}
+  VCardActions
+    VRow.justify-center.align-center
+      VCol(cols="6")
+        VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+      VCol(cols="6")
+        VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
 </template>
 
 <script setup>
@@ -24,7 +33,6 @@ const user = useUserStore()
 const isFavorite = ref(false)
 const createSnackbar = useSnackbar()
 const router = useRouter()
-const isVisible = ref(false)
 
 const addFavorite = async () => {
   if (!user.isLogin) {
@@ -79,12 +87,44 @@ const addFavorite = async () => {
     }
   }
 }
+const addCart = async () => {
+  if (!user.isLogin) {
+    router.push('/login')
+    return
+  }
+  try {
+    const { data } = await apiAuth.patch('/users/cart', {
+      book: props._id,
+      quantity: 1
+    })
+    user.cart = data.result
+    createSnackbar({
+      text: '新增成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
 
 onMounted(async () => {
   if (user.isLogin) { // 確保用戶已登錄
     isFavorite.value = await checkFavoriteStatus()
   }
-  isVisible.value = true
 })
 
 const checkFavoriteStatus = async () => {
@@ -101,4 +141,5 @@ const checkFavoriteStatus = async () => {
     return false
   }
 }
+
 </script>

@@ -3,9 +3,12 @@ VContainer
   VRow
     VCol(cols="12" md="3" style="position: sticky" top="0")
       VImg(:src="books.image")
-      VCol.d-flex.justify-space-between
-        VBtn.mt-5(color="#4d4637" dark :href="books.buyLink" target="_blank") 購買介面
-        VBtn.text-right(:icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite" )
+      VCardActions
+        VRow.justify-center.align-center
+          VCol(cols="6")
+            VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+          VCol(cols="6")
+            VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
     VCol(cols="12" md="9")
       h1 {{ books.title }}
       h2 {{ books.authors }}
@@ -77,6 +80,7 @@ import { useForm } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
+import { useFavorite } from '@/composables/useFavorite'
 
 const route = useRoute()
 const router = useRouter()
@@ -91,7 +95,6 @@ const newReview = ref({
   comment: ''
 })
 const dialog = ref(false)
-const isFavorite = ref(false)
 const { handleSubmit } = useForm({
   initialValues: {
     usersId: '',
@@ -114,6 +117,8 @@ const books = ref({
 })
 
 const updatedReview = ref([])
+
+const { isFavorite, checkFavoriteStatus, addFavorite } = useFavorite(route.params.id)
 
 const closeDialog = () => {
   dialog.value = false
@@ -180,15 +185,18 @@ const openDialog = (reviewId) => {
 }
 
 const editReviews = handleSubmit(async (values) => {
-  console.log(updatedReview.value)
   try {
+    console.log(updatedReview.value)
+    console.log('Form values:', values)
     const fd = new FormData()
     for (const key in values) {
-      fd.append(key, updatedReview.value[key])
+      fd.append(key, updatedReview.value[key] || values[key])
     }
+
     if (dialog.value === '') {
       await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
     }
+    console.log('FormData entries:', ...fd.entries())
 
     createSnackbar({
       text: '編輯成功',
@@ -214,7 +222,7 @@ const editReviews = handleSubmit(async (values) => {
   }
   closeDialog()
 })
-
+console.log(updatedReview.value)
 onMounted(async () => {
   try {
     const { data } = await api.get(`/books/${route.params.id}`)
@@ -226,16 +234,51 @@ onMounted(async () => {
     books.value.retailPrice = data.result.retailPrice
     books.value.categories = data.result.categories
     books.value.buyLink = data.result.buyLink
-    let formattedDescription = data.result.description.replace(/(※|★|◆|【)/g, '<br>$1')
+    let formattedDescription = data.result.description.replace(/(※|★|◆|✓|●|▓|▌|￭|──|【)/g, '<br>$1')
     formattedDescription = formattedDescription.replace(/(】)/g, '$1<br>')
     formattedDescription = formattedDescription.replace(/(?<=──[^,]*?)(?=,)/g, '<br>$1')
     books.value.description = formattedDescription
     books.value.reviews = data.result.reviews
 
     document.title = `書評網 | ${books.value.title}`
+    await checkFavoriteStatus()
   } catch (error) {
     console.log(error)
   }
 })
+
+const addCart = async () => {
+  if (!user.isLogin) {
+    router.push('/login')
+    return
+  }
+  try {
+    const { data } = await apiAuth.patch('/users/cart', {
+      book: books.value._id,
+      quantity: 1
+    })
+    user.cart = data.result
+    createSnackbar({
+      text: '新增成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
 
 </script>
