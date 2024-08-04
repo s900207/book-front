@@ -121,12 +121,6 @@ const addCart = async () => {
   }
 }
 
-onMounted(async () => {
-  if (user.isLogin) { // 確保用戶已登錄
-    isFavorite.value = await checkFavoriteStatus()
-  }
-})
-
 const checkFavoriteStatus = async () => {
   try {
     const { data } = await apiAuth.get('/users/favorite', {
@@ -141,5 +135,10 @@ const checkFavoriteStatus = async () => {
     return false
   }
 }
+onMounted(async () => {
+  if (user.isLogin) { // 確保用戶已登錄
+    isFavorite.value = await checkFavoriteStatus()
+  }
+})
 
 </script>
