@@ -241,9 +241,7 @@ onMounted(async () => {
     books.value.reviews = data.result.reviews
 
     document.title = `書評網 | ${books.value.title}`
-    if (user.isLogin) { // 確保用戶已登錄
-      isFavorite.value = await checkFavoriteStatus()
-    }
+    await checkFavoriteStatus()
   } catch (error) {
     console.log(error)
   }
