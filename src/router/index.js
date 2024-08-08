@@ -73,7 +73,7 @@ const routes = [
         component: () => import('@/views/front/CartView.vue'),
         meta: {
           title: '書評網 | 購物車',
-          login: false,
+          login: true,
           admin: false
         }
       },

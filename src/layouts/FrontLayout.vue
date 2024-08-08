@@ -57,7 +57,7 @@ const drawer = ref(false)
 const navItems = computed(() => {
   return [
     { to: '/mybook', text: '我的書籍', icon: 'mdi-book-account', show: user.isLogin },
-    { to: '/article', text: '文章', icon: 'mdi-book', show: true },
+    { to: '/article', text: '文章', icon: 'mdi-book', show: false },
     { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
     { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
     { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
