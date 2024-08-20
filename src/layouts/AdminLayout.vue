@@ -22,8 +22,8 @@ const navItems = [
   { to: '/admin/import', text: '引入書籍', icon: 'mdi-book-arrow-up', show: true },
   { to: '/admin/bookmanagement', text: '書籍管理', icon: 'mdi-book-sync' },
   { to: '/admin/orders', text: '訂單管理', icon: 'mdi-list-box' },
-  { to: '/admin/article', text: '文章管理', icon: 'mdi-book' },
-  { to: '/admin/report', text: '檢舉管理', icon: 'mdi-alert' },
+  { to: '/admin/article', text: '文章管理', icon: 'mdi-book', show: false },
+  { to: '/admin/report', text: '檢舉管理', icon: 'mdi-alert', show: false },
   { to: '/', text: '回首頁', icon: 'mdi-home' }
 ]
 
