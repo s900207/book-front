@@ -59,8 +59,8 @@ VContainer
                   VCol(cols="auto")
                     VListItemSubtitle.mb-5(:style="{ fontSize: '20px' }") {{ review.comment }}
                   VCol.d-flex.justify-end
-                    VListItemAction
-                      VBtn(icon="mdi-pencil" color="#4d4637" @click="() => openDialog(review._id)")
+                    //- VListItemAction
+                    //-   VBtn(icon="mdi-pencil" color="#4d4637" @click="() => openDialog(review._id)")
 VDialog(v-model="dialog" max-width="290")
   VForm(:disabled="isSubmitting" @submit.prevent="submit")
     VCard
