@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/public/book.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="font" type="font/eot" href="assets/materialdesignicons-webfont-861aea05.eot" crossorigin="anonymous" media="(max-width: 0px)">
   <title>書評網</title>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -25,6 +26,15 @@
         document.head.appendChild(link);
       }
     });
+    document.addEventListener('DOMContentLoaded', () => {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'font';
+  link.type = 'font/eot';
+  link.href = 'assets/materialdesignicons-webfont-861aea05.eot';
+  link.crossOrigin = 'anonymous';
+  document.head.appendChild(link);
+});
   </script>
 </head>
 
