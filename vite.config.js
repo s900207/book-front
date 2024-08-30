@@ -16,7 +16,10 @@ export default defineConfig({
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     vuetify({
-      autoImport: true
+      autoImport: true,
+      icons: {
+        iconfont: 'mdi' // 使用其他你需要的圖標庫，例如 'mdi' (Material Design Icons) 或 'fa' (Font Awesome)
+      }
     }),
     ViteFonts({
       google: {
