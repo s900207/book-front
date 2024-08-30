@@ -22,9 +22,7 @@ export default defineConfig({
       google: {
         families: [{
           name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-          as: 'style',
-          crossorigin: 'anonymous'
+          styles: 'wght@100;300;400;500;700;900'
         }]
       }
     })
