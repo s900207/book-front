@@ -20,10 +20,7 @@ export default createVuetify({
       light: {
         colors: {
           primary: '#1867C0',
-          secondary: '#5CBBF6',
-          icons: {
-            defaultSet: 'mdi'// This is already the default value - only for display purposes
-          }
+          secondary: '#5CBBF6'
         }
       }
     }
