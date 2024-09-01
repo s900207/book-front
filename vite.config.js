@@ -10,16 +10,20 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
   plugins: [
     vue({
       template: { transformAssetUrls }
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     vuetify({
-      autoImport: true,
-      defaultAssets: {
-        icons: false
-      }
+      autoImport: true
     }),
     ViteFonts({
       google: {
