@@ -70,14 +70,6 @@ onMounted(() => {
 
 watch([searchTerm, showAll], fetchBooks)
 
-document.addEventListener('DOMContentLoaded', function () {
-  const preloadLinks = document.querySelectorAll('link[rel="preload"][as="font"]')
-  preloadLinks.forEach(link => {
-    if (link.href.includes('materialdesignicons-webfont')) {
-      link.parentNode.removeChild(link)
-    }
-  })
-})
 </script>
 
   <style scoped lang="sass">
