@@ -27,6 +27,17 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks (id) {
+          if (id.includes('materialdesignicons-webfont')) {
+            return 'mdi-icons'
+          }
+        }
+      }
+    }
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {
