@@ -5,7 +5,6 @@
  */
 
 // Styles
-import 'unplugin-icons/vite'
 import 'vuetify/styles'
 
 // Composables
