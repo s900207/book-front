@@ -1,12 +1,15 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib/framework.mjs'
 
 // Composables
-import { createVuetify } from 'vuetify'
 
 import { zhHant } from 'vuetify/locale'
 
-export default createVuetify({
+Vue.use(Vuetify)
+
+export default new Vuetify({
   theme: {
     themes: {
       light: {
