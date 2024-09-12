@@ -9,7 +9,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 // Composables
-import { createVuetify } from 'vuetify/lib'
+import { createVuetify } from 'vuetify'
 
 import { zhHant } from 'vuetify/locale'
 
@@ -28,8 +28,5 @@ export default createVuetify({
   locale: {
     locale: 'zhHant',
     messages: { zhHant }
-  },
-  icons: {
-    iconfint: 'mdi'
   }
 })
