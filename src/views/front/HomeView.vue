@@ -6,7 +6,7 @@ VContainer
           class="mx-auto mt-5"
           menu-icon=""
           placeholder="請輸入書籍名稱"
-          prepend-inner-icon="mdi-magnify"
+          prepend-inner-icon="i-mdi-magnify"
           v-model="searchTerm"
         )
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
