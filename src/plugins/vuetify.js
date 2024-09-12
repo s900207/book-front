@@ -5,19 +5,16 @@
  */
 
 // Styles
-import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 // Composables
-// import { createVuetify } from 'vuetify'
+import { createVuetify } from 'vuetify/lib'
 
 import { zhHant } from 'vuetify/locale'
-Vue.use(Vuetify)
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default new Vuetify({
+export default createVuetify({
   theme: {
     themes: {
       light: {
