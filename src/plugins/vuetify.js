@@ -5,16 +5,19 @@
  */
 
 // Styles
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 // Composables
-import { createVuetify } from 'vuetify'
+// import { createVuetify } from 'vuetify'
 
 import { zhHant } from 'vuetify/locale'
+Vue.use(Vuetify)
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
+export default new Vuetify({
   theme: {
     themes: {
       light: {
@@ -28,5 +31,8 @@ export default createVuetify({
   locale: {
     locale: 'zhHant',
     messages: { zhHant }
+  },
+  icons: {
+    iconfint: 'mdi'
   }
 })
