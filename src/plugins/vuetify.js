@@ -28,5 +28,8 @@ export default createVuetify({
   locale: {
     locale: 'zhHant',
     messages: { zhHant }
+  },
+  icons: {
+    iconFont: 'md'
   }
 })
