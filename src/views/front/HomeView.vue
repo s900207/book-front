@@ -75,5 +75,4 @@ watch([searchTerm, showAll], fetchBooks)
   <style scoped lang="sass">
   .books-card
     opacity: 0
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
   </style>
