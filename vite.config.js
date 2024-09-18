@@ -2,7 +2,6 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
-import ignore from 'vite-plugin-ignore'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -26,9 +25,6 @@ export default defineConfig({
           styles: 'wght@100;300;400;500;700;900'
         }]
       }
-    }),
-    ignore({
-      files: ['**/*.eot']
     })
   ],
   define: { 'process.env': {} },
