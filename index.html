@@ -15,6 +15,13 @@
 
 <body>
   <div id="app"></div>
+  <script type="module">
+    // 移除不需要的 eot 預加載標籤
+    document.addEventListener('DOMContentLoaded', () => {
+      const preloadLinks = document.querySelectorAll('link[rel="preload"][as="font"][type="font/eot"]');
+      preloadLinks.forEach(link => link.remove());
+    });
+  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
 
