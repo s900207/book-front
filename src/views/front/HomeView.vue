@@ -10,7 +10,7 @@ VContainer
         )
         template(v-slot:prepend-inner)
           v-icon
-            mdi-magnify
+            mdiAccount
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
       VSwitch(v-model="showAll" label="18+")
   VRow
@@ -24,7 +24,7 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
-import { mdiMagnify } from '@mdi/js'
+import { mdiAccount } from '@mdi/js'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
