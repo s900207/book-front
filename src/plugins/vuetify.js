@@ -6,6 +6,7 @@
 
 // Styles
 import 'vuetify/styles'
+import '@mdi/js'
 
 // Composables
 import { createVuetify } from 'vuetify'
