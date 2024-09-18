@@ -8,7 +8,6 @@
 import 'https://s900207.github.io/book-front/assets/materialdesignicons-webfont-61e8aba5.ttf'
 import 'https://s900207.github.io/book-front/assets/materialdesignicons-webfont-a5928a0d.woff'
 import 'https://s900207.github.io/book-front/assets/materialdesignicons-webfont-662fefa8.woff2'
-import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
