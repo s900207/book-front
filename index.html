@@ -4,24 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" href="/public/book.ico" />
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous">
-  <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap">
-  <link rel="preload" as="font" type="font/woff2" href="https://s900207.github.io/book-front/assets/materialdesignicons-webfont-662fefa8.woff2" crossorigin="anonymous">
-  <link rel="preload" as="font" type="font/woff" href="https://s900207.github.io/book-front/assets/materialdesignicons-webfont-a5928a0d.woff" crossorigin="anonymous">
-  <link rel="preload" as="font" type="font/ttf" href="https://s900207.github.io/book-front/assets/materialdesignicons-webfont-61e8aba5.ttf" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>書評網</title>
 </head>
 
 <body>
   <div id="app"></div>
-  <script type="module">
-    // 移除不需要的 eot 預加載標籤
-    document.addEventListener('DOMContentLoaded', () => {
-      const preloadLinks = document.querySelectorAll('link[rel="preload"][as="font"][type="font/eot"]');
-      preloadLinks.forEach(link => link.remove());
-    });
-  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
 

@@ -16,4 +16,8 @@ export function registerPlugins (app) {
     .use(VuetifyUseDialog)
     .use(pinia)
     .use(router)
+  document.addEventListener('DOMContentLoaded', () => {
+    const preloadLinks = document.querySelectorAll('link[rel="preload"][as="font"][type="font/eot"]')
+    preloadLinks.forEach(link => link.remove())
+  })
 }
