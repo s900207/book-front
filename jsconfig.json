@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "types": [
-      "unplugin-icons/types/vue",
-    ],
     "target": "es5",
     "module": "esnext",
     "baseUrl": "./",

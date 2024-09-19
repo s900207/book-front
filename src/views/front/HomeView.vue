@@ -1,29 +1,29 @@
 <template lang="pug">
-  VContainer
-    VRow
-      VCol(cols="9" md="11")
-        VTextField(
-            class="mx-auto mt-5"
-            menu-icon=""
-            placeholder="請輸入書籍名稱"
-            v-model="searchTerm"
-          )
-          template(v-slot:prepend-inner-icon)
-            IconSearch
-      VCol(cols="3" md="1" class="d-flex align-center justify-end")
-        VSwitch(v-model="showAll" label="18+")
-    VRow
-      VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
-        BooksCard(v-bind="books")
-  </template>
+VContainer
+  VRow
+    VCol(cols="9" md="11")
+      VTextField(
+          class="mx-auto mt-5"
+          menu-icon=""
+          placeholder="請輸入書籍名稱"
+          v-model="searchTerm"
+        )
+        template
+          MagnifyIcon
+    VCol(cols="3" md="1" class="d-flex align-center justify-end")
+      VSwitch(v-model="showAll" label="18+")
+  VRow
+    VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
+      BooksCard(v-bind="books")
+</template>
 
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
-import IconSearch from '~icons/ic/baseline-search'
 import gsap from 'gsap'
+import MagnifyIcon from 'mdi-vue/MagnifyIcon'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
