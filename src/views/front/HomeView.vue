@@ -9,7 +9,7 @@
             v-model="searchTerm"
           )
           template(v-slot:prepend-inner)
-            SvgIcon(:path="magnify")
+            SvgIcon(:path="mdiMagnify")
       VCol(cols="3" md="1" class="d-flex align-center justify-end")
         VSwitch(v-model="showAll" label="18+")
     VRow
@@ -24,7 +24,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
 import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiMagnify } from '@mdi/js'
+import { mdiMagnify as mdiMagnifyIcon } from '@mdi/js'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
@@ -73,7 +73,7 @@ onMounted(() => {
 
 watch([searchTerm, showAll], fetchBooks)
 
-const magnify = computed(() => mdiMagnify)
+const mdiMagnify = computed(() => mdiMagnifyIcon)
 
 </script>
 
