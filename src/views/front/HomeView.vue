@@ -9,7 +9,6 @@ VContainer
           prepend-inner-icon="mdi-magnify"
           v-model="searchTerm"
         )
-        i.fa-solid.fa-magnifying-glass
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
       VSwitch(v-model="showAll" label="18+")
   VRow
