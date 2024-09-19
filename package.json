@@ -11,6 +11,7 @@
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "axios": "^1.6.7",
