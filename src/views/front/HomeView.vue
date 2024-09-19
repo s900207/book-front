@@ -23,7 +23,7 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
-import MagnifyIcon from 'mdi-vue/MagnifyIcon'
+import MagnifyIcon from '@/assets/svg/magnify.svg'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
