@@ -24,7 +24,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
 import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiMagnify as mdiMagnifyIcon } from '@mdi/js'
+import { mdiMagnify } from '@mdi/js'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
@@ -72,8 +72,6 @@ onMounted(() => {
 })
 
 watch([searchTerm, showAll], fetchBooks)
-
-const mdiMagnify = computed(() => mdiMagnifyIcon)
 
 </script>
 
