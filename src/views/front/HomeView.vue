@@ -9,7 +9,7 @@ VContainer
           v-model="searchTerm"
         )
         template
-          MagnifyIcon
+          IconifyIcon(icon="mdi:magnify")
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
       VSwitch(v-model="showAll" label="18+")
   VRow
@@ -23,7 +23,7 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
-import MagnifyIcon from '@/assets/svg/magnify.svg'
+import 'unplugin-icons/types/vue'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
