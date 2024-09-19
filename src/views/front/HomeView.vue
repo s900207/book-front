@@ -22,7 +22,7 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
-import IconSearch from '@iconify-json/ic/baseline-search'
+import IconSearch from '~icons/ic/baseline-search'
 import gsap from 'gsap'
 
 const { api } = useApi()
