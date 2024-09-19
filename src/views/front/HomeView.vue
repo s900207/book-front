@@ -1,36 +1,31 @@
-<template lang="pug">
-VContainer
-  VRow
-    VCol(cols="9" md="11")
-      VTextField(
-          class="mx-auto mt-5"
-          menu-icon=""
-          placeholder="請輸入書籍名稱"
-          prepend-inner-icon="mdi-magnify"
-          v-model="searchTerm"
-        )
-    VCol(cols="3" md="1" class="d-flex align-center justify-end")
-      VSwitch(v-model="showAll" label="18+")
-  VRow
-    VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
-      BooksCard(v-bind="books")
+<template>
+  <div>
+    <input v-model="searchTerm" placeholder="Search books..." />
+    <button @click="showAll = !showAll">Toggle Show All</button>
+    <div v-for="book in books" :key="book.id" class="books-card">
+      <BooksCard :book="book" />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
-import { useApi } from '@/composables/axios'
+import { ref, onMounted, watch, nextTick, defineAsyncComponent } from 'vue'
+import { useApi } from '@/composables/useApi'
 import { useSnackbar } from 'vuetify-use-dialog'
-import BooksCard from '@/components/BooksCard.vue'
-import gsap from 'gsap'
+// import gsap from 'gsap'
+import { debounce } from 'lodash'
 
-const { api } = useApi()
+const api = useApi()
 const createSnackbar = useSnackbar()
+const BooksCard = defineAsyncComponent(() =>
+  import('@/components/BooksCard.vue')
+)
 
 const books = ref([])
 const searchTerm = ref('')
 const showAll = ref(false)
 
-const fetchBooks = async () => {
+const fetchBooks = debounce(async () => {
   try {
     const { data } = await api.get('/books', {
       params: {
@@ -48,7 +43,9 @@ const fetchBooks = async () => {
     books.value = filteredBooks
 
     await nextTick()
-    gsap.to('.books-card', { opacity: 1, duration: 0.5 })
+    document.querySelectorAll('.books-card').forEach(card => {
+      card.classList.add('visible')
+    })
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -62,17 +59,20 @@ const fetchBooks = async () => {
       }
     })
   }
-}
+}, 300) // 300ms debounce
 
 onMounted(() => {
   fetchBooks()
 })
 
 watch([searchTerm, showAll], fetchBooks)
-
 </script>
 
-  <style scoped lang="sass">
-  .books-card
-    opacity: 0
-  </style>
+<style scoped lang="sass">
+.books-card
+  opacity: 0
+  transition: opacity 0.5s
+
+.books-card.visible
+  opacity: 1
+</style>
