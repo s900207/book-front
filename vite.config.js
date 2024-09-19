@@ -23,10 +23,7 @@ export default defineConfig({
     }),
     ViteFonts({
       google: {
-        families: [{
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900'
-        }]
+        families: ['Roboto', 'Material Icons']
       }
     }),
     Components({
