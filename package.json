@@ -11,6 +11,7 @@
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@iconify-icons/ic": "^1.2.13",
     "@iconify-json/mdi": "^1.2.0",
     "axios": "^1.6.7",
     "gsap": "^3.12.5",

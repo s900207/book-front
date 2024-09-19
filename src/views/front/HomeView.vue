@@ -21,8 +21,8 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
-import gsap from 'gsap'
 import IconSearch from '~icons/ic/baseline-search'
+import gsap from 'gsap'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()
