@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
 import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import Components from 'unplugin-vue-components/vite'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -26,6 +28,9 @@ export default defineConfig({
           styles: 'wght@100;300;400;500;700;900'
         }]
       }
+    }),
+    Components({
+      resolvers: IconsResolver()
     }),
     Icons({
       autoInstall: true
