@@ -9,7 +9,7 @@ VContainer
           v-model="searchTerm"
         )
         template(v-slot:append)
-          svgIcon(href="#icon-search")
+          svgIcon(href="#icon-magnify")
     VCol(cols="3" md="1" class="d-flex align-center justify-end")
       VSwitch(v-model="showAll" label="18+")
   VRow
