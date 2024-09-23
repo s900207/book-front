@@ -5,7 +5,7 @@
  */
 
 // Styles
-import '@mdi/font/css/materialdesignicons.css'
+import 'virtual:svg-icons-register'
 import 'vuetify/styles'
 
 // Composables

@@ -2,6 +2,8 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
+import createSvgIconsPlugin from 'vite-plugin-svg-icons'
+import path from 'path'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -25,6 +27,12 @@ export default defineConfig({
           styles: 'wght@100;300;400;500;700;900'
         }]
       }
+    }),
+    createSvgIconsPlugin({
+      // Specify the icon folder to be cached
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+      // Specify symbolId format
+      symbolId: 'icon-[dir]-[name]'
     })
   ],
   define: { 'process.env': {} },
