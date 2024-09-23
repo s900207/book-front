@@ -8,7 +8,7 @@ VContainer
           placeholder="請輸入書籍名稱"
           v-model="searchTerm"
         )
-          template(v-slot:append)
+          template(#append)
             svgIcon(href="#icon-magnify")
       VCol(cols="3" md="1" class="d-flex align-center justify-end")
         VSwitch(v-model="showAll" label="18+")
