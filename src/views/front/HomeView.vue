@@ -2,15 +2,15 @@
 VContainer
     VRow
       VCol(cols="9" md="11")
+        template(v-slot:append)
+            svgIcon(href="#icon-magnify")
         VTextField(
           class="mx-auto mt-5"
           menu-icon=""
           placeholder="請輸入書籍名稱"
           v-model="searchTerm"
-          append-inner-icon=""
-      )
-          template(v-slot:append-inner)
-            svgIcon(href="#icon-magnify")
+        )
+
       VCol(cols="3" md="1" class="d-flex align-center justify-end")
         VSwitch(v-model="showAll" label="18+")
     VRow
