@@ -7,6 +7,7 @@ VContainer
           menu-icon=""
           placeholder="請輸入書籍名稱"
           v-model="searchTerm"
+          svgIcon="icon-magnify"
         )
           template(v-slot:append)
             svgIcon(href="#icon-magnify")
