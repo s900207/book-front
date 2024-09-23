@@ -9,8 +9,8 @@ VContainer
           v-model="searchTerm"
           append-inner-icon=""
       )
-        template(v-slot:append-inner)
-          svgIcon(href="#icon-magnify")
+          template(v-slot:append-inner)
+            svgIcon(href="#icon-magnify")
       VCol(cols="3" md="1" class="d-flex align-center justify-end")
         VSwitch(v-model="showAll" label="18+")
     VRow
