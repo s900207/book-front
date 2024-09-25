@@ -16,11 +16,13 @@ VCard.books-card( width="250px" height="370px")
       VCol(cols="6")
         VBtn(:color="isFavorite ? 'red' : 'blue'" @click="addFavorite")
           template(v-slot:prepend)
-            svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+            svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'")
+          span {{ isFavorite ? '取消最愛' : '加入最愛' }}
       VCol(cols="6")
-        VBtn(@click="addCart" color="primary" ) 加入購物車
+        VBtn(@click="addCart" color="primary" )
           template(v-slot:prepend)
             svgIcon(href="#icon-cart")
+          span 加入購物車
 </template>
 
 <script setup>
