@@ -16,7 +16,7 @@ const props = defineProps({
   },
   fill: {
     type: String,
-    default: '#000'
+    default: '#icon-phone'
   },
   width: {
     type: String,

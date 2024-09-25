@@ -20,7 +20,7 @@ VCard.books-card( width="250px" height="370px")
       VCol(cols="6")
         VBtn(@click="addCart")
           template(v-slot:prepend)
-            svgIcon(href="#icon-cart" fill="primary" width="40px" height="40px") 加入購物車
+            svgIcon(href="#icon-cart" fill="#750000") 加入購物車
 </template>
 
 <script setup>
