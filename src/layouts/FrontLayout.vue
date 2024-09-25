@@ -41,6 +41,7 @@ import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
@@ -56,7 +57,7 @@ const drawer = ref(false)
 // 導覽列項目
 const navItems = computed(() => {
   return [
-    { to: '/mybook', text: '我的書籍', icon: 'mdi-book-account', show: user.isLogin },
+    { to: '/mybook', text: '我的書籍', svgIcon: '#icon-cart', show: user.isLogin },
     { to: '/article', text: '文章', icon: 'mdi-book', show: false },
     { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
     { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
