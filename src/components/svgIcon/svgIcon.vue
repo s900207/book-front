@@ -16,15 +16,15 @@ const props = defineProps({
   },
   fill: {
     type: String,
-    default: '#000' // 默認顏色值
+    default: '#000'
   },
   width: {
     type: String,
-    default: '30px'
+    default: '20px'
   },
   height: {
     type: String,
-    default: '30px'
+    default: '20px'
   }
 })
 
