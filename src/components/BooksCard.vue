@@ -18,9 +18,9 @@ VCard.books-card( width="250px" height="370px")
           template(v-slot:prepend)
             svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'") {{ isFavorite ? '取消最愛' : '加入最愛' }}
       VCol(cols="6")
-        VBtn(color="primary" @click="addCart")
+        VBtn(@click="addCart")
           template(v-slot:prepend)
-            svgIcon(href="#icon-cart" fill="red") 加入購物車
+            svgIcon(href="#icon-cart" fill="primary" width="40px" height="40px") 加入購物車
 </template>
 
 <script setup>
