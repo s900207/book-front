@@ -38,5 +38,6 @@ div {
 }
 svg {
   display: block;
+  fill: currentColor;
 }
 </style>
