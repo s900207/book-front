@@ -15,12 +15,12 @@ VCard.books-card( width="250px" height="370px")
     VRow.justify-center.align-center
       VCol(cols="6")
         VBtn(:color="isFavorite ? 'red' : 'blue'" @click="addFavorite")
-          template(v-slot:prepend)
-            svgIcon(:href="isFavorite ? '#mdi-heart-minus' : '#mdi-heart-plus'") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+          template(v-slot:append)
+            svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'") {{ isFavorite ? '取消最愛' : '加入最愛' }}
       VCol(cols="6")
         VBtn(color="primary" @click="addCart")
           template(v-slot:prepend)
-            svgIcon(href="#mdi-cart") 加入購物車
+            svgIcon(href="#icon-cart") 加入購物車
 </template>
 
 <script setup>
