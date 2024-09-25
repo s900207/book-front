@@ -14,13 +14,9 @@ VCard.books-card( width="250px" height="370px")
   VCardActions
     VRow.justify-center.align-center
       VCol(cols="6")
-        VBtn(:color="isFavorite ? 'red' : 'blue'" @click="addFavorite")
-          template(v-slot:append)
-            svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+        VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
       VCol(cols="6")
-        VBtn(color="primary" @click="addCart")
-          template(v-slot:prepend)
-            svgIcon(href="#icon-cart") 加入購物車
+        VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
 </template>
 
 <script setup>
@@ -29,7 +25,6 @@ import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
-import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 
