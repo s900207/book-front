@@ -54,33 +54,19 @@ const addFavorite = async () => {
     })
     console.log(data) // 我拿到資料了
     user.favorite = data.result
-    if (isFavorite.value) {
-      createSnackbar({
-        text: '已加入我的最愛',
-        showCloseButton: false,
-        snackbarProps: {
-          timeout: 2000,
-          color: 'green',
-          location: 'bottom'
-        }
-      })
-    } else {
-      createSnackbar({
-        text: '已移除我的最愛',
-        showCloseButton: false,
-        snackbarProps: {
-          timeout: 2000,
-          color: 'red',
-          location: 'bottom'
-        }
-      })
-    }
+    createSnackbar({
+      text: isFavorite.value ? '已加入我的最愛' : '已移除我的最愛',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: isFavorite.value ? 'green' : 'red',
+        location: 'bottom'
+      }
+    })
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      // 如果出现401错误，重定向到登录页面
       router.push('/login')
     } else {
-      // 其他错误，输出错误信息并显示Snackbar
       console.error(error)
       createSnackbar({
         text: '發生錯誤，請稍後再試',
@@ -137,13 +123,12 @@ const checkFavoriteStatus = async () => {
     })
     return data.result.includes(props._id)
   } catch (error) {
-    // 如果發生錯誤，可能是用戶未登錄或其他原因
     console.error(error)
     return false
   }
 }
 onMounted(async () => {
-  if (user.isLogin) { // 確保用戶已登錄
+  if (user.isLogin) {
     isFavorite.value = await checkFavoriteStatus()
   }
 })
