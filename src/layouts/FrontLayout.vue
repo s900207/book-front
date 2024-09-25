@@ -23,6 +23,7 @@ VAppBar(color="#4d4637")
     //- 手機板導覽列
     template(v-if="isMobile")
       VAppBarNavIcon(@click="drawer = true")
+        svgIcon(href="#icon-menu")
     //- 電腦版導覽列
     template(v-else)
       template(v-for="item in navItems" :key="item.to")
