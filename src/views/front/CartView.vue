@@ -1,22 +1,31 @@
 <template lang="pug">
-VContainer
-  VCol(cols="12")
-    h1 購物車
-  VDivider
-  VCol(cols="12")
-    VDataTable(:items="cart" :headers="headers")
-      template(v-slot:[`item.book.image`]="{ item }")
-        VImg(:src="item.book.image" alt="Book Image" max-height="100" max-width="60")
-      template(#[`item.quantity`]="{ item }")
-        VBtn(variant="text" icon="mdi-minus" color="red" @click="addCart(item.book._id, -1)")
-        | {{ item.quantity }}
-        VBtn(variant="text" icon="mdi-plus" color="green" @click="addCart(item.book._id, 1)")
-      template(#[`item.action`]="{ item }")
-        VBtn(variant="text" icon="mdi-delete" color="red" @click="addCart(item.book._id, item.quantity * -1)")
-  VCol.text-center(cols="12")
-    p 總金額: {{ total }}
-    VBtn(color="green" :disabled="!canCheckout" :loading="isSubmitting" @click="checkout") 結帳
-</template>
+  VContainer
+    VCol(cols="12")
+      h1 購物車
+    VDivider
+    VCol(cols="12")
+      VDataTable(:items="cart" :headers="headers")
+        template(v-slot:[`item.book.image`]="{ item }")
+          RouterLink(:to="'/books/' + item.book._id")
+            VImg(:src="item.book.image" alt="Book Image" max-height="100" max-width="60")
+        template(#[`item.book.title`]="{ item }")
+          RouterLink(:to="'/books/' + item.book._id" class="no-underline") {{ item.book.title }}
+        template(#[`item.book.retailPrice`]="{ item }" )
+          | $ {{ item.book.retailPrice }}
+        template(#[`item.quantity`]="{ item }")
+          div(class="btn-container")
+            VBtn(variant="text" color="red" @click="addCart(item.book._id, -1)" class="custom-btn")
+              svgIcon(href="#icon-minus")
+            | {{ item.quantity }}
+            VBtn(variant="text" color="green" @click="addCart(item.book._id, 1)" class="custom-btn")
+              svgIcon(href="#icon-plus")
+        template(#[`item.action`]="{ item }")
+          VBtn(variant="text" color="red" @click="addCart(item.book._id, item.quantity * -1)" class="custom-btn")
+            svgIcon(href="#icon-delete")
+    VCol.text-center(cols="12")
+      p 總金額: $ {{ total }}
+      VBtn(color="green" :disabled="!canCheckout" :loading="isSubmitting" @click="checkout") 結帳
+  </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
@@ -24,6 +33,7 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
@@ -38,11 +48,11 @@ const headers = [
     value: 'name'
   },
   { title: '書本圖片', key: 'book.image' },
-  { title: '書本名稱', key: 'book.title' },
-  { title: '單價', key: 'book.retailPrice' },
-  { title: '數量', key: 'quantity' },
+  { title: '書本名稱', key: 'book.title', align: 'center' },
+  { title: '單價', key: 'book.retailPrice', align: 'left' },
+  { title: '數量', key: 'quantity', align: 'center' },
   { title: '總價', key: 'total', value: item => item.book.retailPrice * item.quantity },
-  { title: '操作', key: 'action' }
+  { title: '操作', key: 'action', align: 'center' }
 ]
 
 const total = computed(() => {
@@ -142,3 +152,24 @@ onMounted(async () => {
   }
 })
 </script>
+  <style>
+  .btn-container {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  .custom-btn {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+  }
+  .no-underline {
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  </style>

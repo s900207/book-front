@@ -41,16 +41,18 @@ VContainer
           template(v-else)
             p {{ books.description.substring(0, 500) }}
         VCol.text-center
-          VBtn(:color="showFullDescription ? '#4d4637' : '#4d4637'" @click="showFullDescription = !showFullDescription" icon class="ma-2" rounded width="40" height="40")
-            template
-              svgIcon(:href="showFullDescription ? '#icon-chevron-up' : '#icon-chevron-down'")
+          VBtn(@click="showFullDescription = !showFullDescription" color="#4d4637" rounded)
+            template(v-slot:default)
+              svgIcon(:href="showFullDescription ? '#icon-chevron-up' : '#icon-chevron-down'" color="#f6eee0")
       VRow
         VCol(cols="12")
           h3 新增書評:
           VForm(:disabled="isSubmitting" @submit.prevent="submit")
             VRating(v-model="newReview.rating" color="#4d4637 darken-3" hover)
             VTextarea(v-model="newReview.comment" label="你的書評" required)
-            VBtn(color="#4d4637" type="submit" :loading="isSubmitting") 提交
+            VRow
+              VCol.d-flex.justify-end
+                VBtn(color="#4d4637" type="submit" :loading="isSubmitting" class="ml-auto") 提交
       VRow
         VCol(cols="12")
           h3 書評:
@@ -193,45 +195,45 @@ const submit = handleSubmit(async (values) => {
 //   dialog.value = true
 // }
 
-// const editReviews = handleSubmit(async (values) => {
-//   try {
-//     console.log(updatedReview.value)
-//     console.log('Form values:', values)
-//     const fd = new FormData()
-//     for (const key in values) {
-//       fd.append(key, updatedReview.value[key] || values[key])
-//     }
+const editReviews = handleSubmit(async (values) => {
+  try {
+    console.log(updatedReview.value)
+    console.log('Form values:', values)
+    const fd = new FormData()
+    for (const key in values) {
+      fd.append(key, updatedReview.value[key] || values[key])
+    }
 
-//     if (dialog.value === '') {
-//       await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
-//     }
-//     console.log('FormData entries:', ...fd.entries())
+    if (dialog.value === '') {
+      await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
+    }
+    console.log('FormData entries:', ...fd.entries())
 
-//     createSnackbar({
-//       text: '編輯成功',
-//       showCloseButton: false,
-//       snackbarProps: {
-//         timeout: 2000,
-//         color: 'green',
-//         location: 'bottom'
-//       }
-//     })
-//   } catch (error) {
-//     console.log(error)
-//     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-//     createSnackbar({
-//       text,
-//       showCloseButton: false,
-//       snackbarProps: {
-//         timeout: 2000,
-//         color: 'red',
-//         location: 'bottom'
-//       }
-//     })
-//   }
-//   closeDialog()
-// })
-// console.log(updatedReview.value)
+    createSnackbar({
+      text: '編輯成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+  // closeDialog()
+})
+console.log(updatedReview.value)
 onMounted(async () => {
   try {
     const { data } = await api.get(`/books/${route.params.id}`)
