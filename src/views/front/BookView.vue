@@ -6,9 +6,15 @@ VContainer
       VCardActions
         VRow.justify-center.align-center
           VCol(cols="6")
-            VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+            VBtn(:color="isFavorite ? 'red' : 'blue'" @click="addFavorite")
+              template(v-slot:prepend)
+                svgIcon(:href="isFavorite ? '#icon-heart-minus' : '#icon-heart-plus'")
+              span {{ isFavorite ? '取消最愛' : '加入最愛' }}
           VCol(cols="6")
-            VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
+            VBtn(@click="addCart" color="primary" )
+              template(v-slot:prepend)
+                svgIcon(href="#icon-cart")
+              span 加入購物車
     VCol(cols="12" md="9")
       h1 {{ books.title }}
       h2 {{ books.authors }}
@@ -35,7 +41,9 @@ VContainer
           template(v-else)
             p {{ books.description.substring(0, 500) }}
         VCol.text-center
-          VBtn(v-if="books.description.length > 100")(color="#4d4637" @click="showFullDescription = !showFullDescription" :icon="showFullDescription ? 'mdi-chevron-up' : 'mdi-chevron-down'")
+          VBtn(:color="showFullDescription ? '#4d4637' : '#4d4637'" @click="showFullDescription = !showFullDescription" icon class="ma-2" rounded width="40" height="40")
+            template
+              svgIcon(:href="showFullDescription ? '#icon-chevron-up' : '#icon-chevron-down'")
       VRow
         VCol(cols="12")
           h3 新增書評:
@@ -81,6 +89,7 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
 import { useFavorite } from '@/composables/useFavorite'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -120,9 +129,9 @@ const updatedReview = ref([])
 
 const { isFavorite, checkFavoriteStatus, addFavorite } = useFavorite(route.params.id)
 
-const closeDialog = () => {
-  dialog.value = false
-}
+// const closeDialog = () => {
+//   dialog.value = false
+// }
 
 const submit = handleSubmit(async (values) => {
   console.log(newReview.value)
@@ -172,57 +181,57 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-const openDialog = (reviewId) => {
-  if (reviewId) {
-    const review = books.value.reviews.find(review => review._id === reviewId)
-    updatedReview.value.id = review._id
-    updatedReview.value.rating = review.rating
-    updatedReview.value.comment = review.comment
-    updatedReview.value.bookId = books.value._id
-    console.log(updatedReview.value.bookId)
-  }
-  dialog.value = true
-}
+// const openDialog = (reviewId) => {
+//   if (reviewId) {
+//     const review = books.value.reviews.find(review => review._id === reviewId)
+//     updatedReview.value.id = review._id
+//     updatedReview.value.rating = review.rating
+//     updatedReview.value.comment = review.comment
+//     updatedReview.value.bookId = books.value._id
+//     console.log(updatedReview.value.bookId)
+//   }
+//   dialog.value = true
+// }
 
-const editReviews = handleSubmit(async (values) => {
-  try {
-    console.log(updatedReview.value)
-    console.log('Form values:', values)
-    const fd = new FormData()
-    for (const key in values) {
-      fd.append(key, updatedReview.value[key] || values[key])
-    }
+// const editReviews = handleSubmit(async (values) => {
+//   try {
+//     console.log(updatedReview.value)
+//     console.log('Form values:', values)
+//     const fd = new FormData()
+//     for (const key in values) {
+//       fd.append(key, updatedReview.value[key] || values[key])
+//     }
 
-    if (dialog.value === '') {
-      await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
-    }
-    console.log('FormData entries:', ...fd.entries())
+//     if (dialog.value === '') {
+//       await apiAuth.patch(`/books/${updatedReview.value.bookId}/reviews/${updatedReview.value.id}`, fd)
+//     }
+//     console.log('FormData entries:', ...fd.entries())
 
-    createSnackbar({
-      text: '編輯成功',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'green',
-        location: 'bottom'
-      }
-    })
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    createSnackbar({
-      text,
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
-  }
-  closeDialog()
-})
-console.log(updatedReview.value)
+//     createSnackbar({
+//       text: '編輯成功',
+//       showCloseButton: false,
+//       snackbarProps: {
+//         timeout: 2000,
+//         color: 'green',
+//         location: 'bottom'
+//       }
+//     })
+//   } catch (error) {
+//     console.log(error)
+//     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+//     createSnackbar({
+//       text,
+//       showCloseButton: false,
+//       snackbarProps: {
+//         timeout: 2000,
+//         color: 'red',
+//         location: 'bottom'
+//       }
+//     })
+//   }
+//   closeDialog()
+// })
+// console.log(updatedReview.value)
 onMounted(async () => {
   try {
     const { data } = await api.get(`/books/${route.params.id}`)
