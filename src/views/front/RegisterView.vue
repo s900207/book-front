@@ -11,28 +11,32 @@ VContainer
           minlength="4" maxlength="20" counter
           v-model="account.value.value"
           :error-messages="account.errorMessage.value"
-          prepend-icon="mdi-account"
         )
+          template(v-slot:prepend-inner)
+            svgIcon(href="#icon-account")
         VTextField(
           label="信箱" type="email"
           v-model="email.value.value"
           :error-messages="email.errorMessage.value"
-          prepend-icon="mdi-email"
         )
+          template(v-slot:prepend-inner)
+            svgIcon(href="#icon-email")
         VTextField(
           label="密碼" type="password"
           minlength="4" maxlength="20" counter
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
-          prepend-icon="mdi-key"
         )
+          template(v-slot:prepend-inner)
+            svgIcon(href="#icon-key")
         VTextField(
           label="確認密碼" type="password"
           minlength="4" maxlength="20" counter
           v-model="passwordConfirm.value.value"
           :error-messages="passwordConfirm.errorMessage.value"
-          prepend-icon="mdi-key-change"
         )
+          template(v-slot:prepend-inner)
+            svgIcon(href="#icon-key-change")
         VBtn(type="submit" color="#4d4637") 註冊
 </template>
 
@@ -43,6 +47,7 @@ import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { api } = useApi()
 

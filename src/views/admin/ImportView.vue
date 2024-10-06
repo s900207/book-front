@@ -186,7 +186,7 @@ const searchBook = async () => {
       description.value.value = data.items[0].volumeInfo.description
       image.value.value = data.items[0].volumeInfo.imageLinks.thumbnail
         .replace('http://', 'https://')
-        .replace('img=1&zoom=1', 'img=2')
+        .replace('img=1&zoom=1', 'img=1&zoom=2')
         .replace('edge=curl', '')
       maturityRating.value.value = data.items[0].volumeInfo.maturityRating
       buyLink.value.value = data.items[0].saleInfo.buyLink
