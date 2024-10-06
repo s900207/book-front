@@ -152,12 +152,35 @@ onMounted(async () => {
   }
 })
 </script>
-  <style>
+<style>
+@media (max-width: 1024px) {
+  .btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0px;
+  }
+
+  .custom-btn {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px 5px;
+  }
+}
+
+@media (max-width: 768px) {
   .btn-container {
     display: flex;
     align-items: center;
     padding-left: 20px;
   }
+
   .custom-btn {
     min-width: 40px;
     height: 40px;
@@ -168,8 +191,9 @@ onMounted(async () => {
     padding: 0px;
     margin: 0px;
   }
-  .no-underline {
+}
+.no-underline {
     text-decoration: none;
     margin-right: 10px;
   }
-  </style>
+</style>

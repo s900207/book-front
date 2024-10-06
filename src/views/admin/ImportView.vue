@@ -12,7 +12,6 @@ VContainer
           density="comfortable"
           menu-icon=""
           placeholder="請輸入書籍名稱或13碼的isbn進行搜尋"
-          prepend-inner-icon="mdi-magnify"
           rounded
           theme="light"
           variant="solo"
@@ -20,6 +19,9 @@ VContainer
           @click:append="searchBook"
           @keydown.enter="searchBook"
         )
+          template(v-slot:prepend-inner)
+            svgIcon(href="#icon-magnify")
+
   VRow
     VCol.d-flex.justify-center(cols="12")
       VForm(:disabled="isSubmitting" @submit.prevent="submit")
@@ -82,6 +84,7 @@ import { useField, useForm } from 'vee-validate'
 import axios from 'axios'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()

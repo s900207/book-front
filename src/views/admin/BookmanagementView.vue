@@ -19,11 +19,12 @@ VContainer
         template(#top)
           VTextField(
             label="搜尋"
-            append-icon="mdi-magnify"
             v-model="tableSearch"
             @click:append="tableApplySearch"
             @keydown.enter="tableApplySearch"
           )
+            template(v-slot:append-inner)
+              svgIcon(href="#icon-magnify")
         template(#[`item.image`]="{ item }")
           VImg(:src="item.image")
         template(#[`item.edit`]="{ item }")
@@ -52,6 +53,7 @@ VContainer
 import { ref } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
