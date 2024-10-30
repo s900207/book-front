@@ -142,6 +142,10 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
+    if (image.value.value) {
+      const cloudinaryResponse = await apiAuth.post('/upload/cloudinary', { imageUrl: image.value.value })
+      fd.append('image', cloudinaryResponse.data.url)
+    }
     await apiAuth.post('/books', fd)
     createSnackbar({
       text: '新增成功',
