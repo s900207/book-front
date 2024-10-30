@@ -85,7 +85,6 @@ import axios from 'axios'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import svgIcon from '@/components/svgIcon/svgIcon.vue'
-import cloudinaryResponse from '@/composables/cloudinary'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
