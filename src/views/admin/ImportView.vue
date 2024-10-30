@@ -200,7 +200,6 @@ const submit = handleSubmit(async (values) => {
     }
 
     if (image.value.value) {
-      console.log('Image URL:', image.value.value)
       const uploadResponse = await apiAuth.post('/upload', { imageUrl: image.value.value })
       if (uploadResponse.data.secure_url) {
         fd.append('imageUrl', uploadResponse.data.secure_url)
