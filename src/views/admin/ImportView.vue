@@ -85,6 +85,7 @@ import axios from 'axios'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import svgIcon from '@/components/svgIcon/svgIcon.vue'
+import cloudinaryResponse from '@/composables/cloudinary'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
@@ -144,7 +145,12 @@ const submit = handleSubmit(async (values) => {
     }
     if (image.value) {
       const imageBlob = await fetch(image.value).then(res => res.blob())
-      fd.append('image', imageBlob, 'image.jpg')
+      const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
+      fd.append('image', cloudinaryResponse.data.secure_url)
+      const cloudinaryResponse = await axios.post('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+        file: imageFile,
+        upload_preset: 'dgwenwlqr'
+      })
     }
     await apiAuth.post('/books', fd)
     createSnackbar({
