@@ -198,23 +198,23 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
+
     if (image.value) {
       const imageBlob = await fetch(image.value).then(res => {
         if (!res.ok) throw new Error('無法獲取圖片')
         return res.blob()
       })
+
       const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
       fd.append('image', imageFile)
     }
+
+    // Log the FormData entries for debugging
     for (const pair of fd.entries()) {
       console.log(pair[0] + ': ' + pair[1])
     }
 
-    await apiAuth.post('/books', fd, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    await apiAuth.post('/books', fd) // Content-Type 不需要明確設置
     createSnackbar({
       text: '新增成功',
       showCloseButton: false,
