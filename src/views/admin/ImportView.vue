@@ -199,9 +199,9 @@ const submit = handleSubmit(async (values) => {
       fd.append(key, values[key])
     }
 
-    if (image.value) {
-      console.log('Image URL:', image.value)
-      const imageBlob = await fetch(image.value).then(res => {
+    if (image.value.value) {
+      console.log('Image URL:', image.value.value)
+      const imageBlob = await fetch(image.value.value).then(res => {
         if (!res.ok) throw new Error('無法獲取圖片')
         return res.blob()
       })
