@@ -145,13 +145,13 @@ const submit = handleSubmit(async (values) => {
     if (image.value) {
       const imageBlob = await fetch(image.value).then(res => res.blob())
       const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
-      fd.append('image', cloudinaryResponse.data.secure_url)
-      const cloudinaryResponse = await axios.post('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
-        file: imageFile,
-        upload_preset: 'dgwenwlqr'
-      })
+      fd.append('image', imageFile)
     }
-    await apiAuth.post('/books', fd)
+    await apiAuth.post('/books', fd, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     createSnackbar({
       text: '新增成功',
       showCloseButton: false,
