@@ -74,7 +74,7 @@ VContainer
         VRow.text-center.mb-5(cols="12")
           VCol
             VSpacer
-            VBtn(color="green" type="submit" :loading="isSubmitting") 新增
+            VBtn(color="green" type="submit" :loading="isSubmitting")
   </template>
 
 <script setup>
