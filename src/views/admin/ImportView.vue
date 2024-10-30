@@ -201,28 +201,11 @@ const submit = handleSubmit(async (values) => {
 
     if (image.value.value) {
       console.log('Image URL:', image.value.value)
-      const imageBlob = await fetch(image.value.value).then(res => {
-        if (!res.ok) throw new Error('無法獲取圖片')
-        return res.blob()
-      })
-
-      const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
-      const imageFormData = new FormData()
-      imageFormData.append('image', imageFile)
-
-      const response = await apiAuth.post('/upload', imageFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-
-      // 根據上傳結果更新表單數據
-      if (response.data.secure_url) {
-        // 將 Cloudinary 返回的圖片 URL 添加到表單數據中
-        fd.append('imageUrl', response.data.secure_url)
+      const uploadResponse = await apiAuth.post('/upload', { imageUrl: image.value.value })
+      if (uploadResponse.data.secure_url) {
+        fd.append('imageUrl', uploadResponse.data.secure_url)
       }
     }
-
     await apiAuth.post('/books', fd)
     createSnackbar({
       text: '新增成功',
