@@ -143,7 +143,10 @@ const submit = handleSubmit(async (values) => {
       fd.append(key, values[key])
     }
     if (image.value) {
-      const imageBlob = await fetch(image.value).then(res => res.blob())
+      const imageBlob = await fetch(image.value).then(res => {
+        if (!res.ok) throw new Error('無法獲取圖片')
+        return res.blob()
+      })
       const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
       fd.append('image', imageFile)
     }
