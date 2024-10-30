@@ -143,7 +143,10 @@ const submit = handleSubmit(async (values) => {
       fd.append(key, values[key])
     }
     if (image.value.value) {
-      const cloudinaryResponse = await apiAuth.post('/upload/cloudinary', { imageUrl: image.value.value })
+      const response = await fetch(image.value.value, { mode: 'cors' })
+      const blob = await response.blob()
+
+      const cloudinaryResponse = await apiAuth.post('/upload/cloudinary', { file: blob })
       fd.append('image', cloudinaryResponse.data.url)
     }
     await apiAuth.post('/books', fd)
