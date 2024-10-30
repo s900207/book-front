@@ -142,12 +142,9 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
-    if (image.value.value) {
-      const response = await fetch(image.value.value, { mode: 'cors' })
-      const blob = await response.blob()
-
-      const cloudinaryResponse = await apiAuth.post('/upload/cloudinary', { file: blob })
-      fd.append('image', cloudinaryResponse.data.url)
+    if (image.value) {
+      const imageBlob = await fetch(image.value).then(res => res.blob())
+      fd.append('image', imageBlob, 'image.jpg')
     }
     await apiAuth.post('/books', fd)
     createSnackbar({
@@ -191,7 +188,7 @@ const searchBook = async () => {
       retailPrice.value.value = data.items[0].saleInfo.retailPrice ? data.items[0].saleInfo.retailPrice.amount : null
       categories.value.value = data.items[0].volumeInfo.categories
       description.value.value = data.items[0].volumeInfo.description
-      image.value.value = data.items[0].volumeInfo.imageLinks.thumbnail
+      image.value = data.items[0].volumeInfo.imageLinks.thumbnail
         .replace('http://', 'https://')
         .replace('img=1&zoom=1', 'img=1&zoom=2')
         .replace('edge=curl', '')
@@ -226,7 +223,7 @@ const searchBook = async () => {
     retailPrice.value.value = ''
     categories.value.value = ''
     description.value.value = ''
-    image.value.value = ''
+    image.value = ''
   }
 }
 </script>
