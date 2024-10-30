@@ -188,7 +188,7 @@ const searchBook = async () => {
       retailPrice.value.value = data.items[0].saleInfo.retailPrice ? data.items[0].saleInfo.retailPrice.amount : null
       categories.value.value = data.items[0].volumeInfo.categories
       description.value.value = data.items[0].volumeInfo.description
-      image.value = data.items[0].volumeInfo.imageLinks.thumbnail
+      image.value.value = data.items[0].volumeInfo.imageLinks.thumbnail
         .replace('http://', 'https://')
         .replace('img=1&zoom=1', 'img=1&zoom=2')
         .replace('edge=curl', '')
@@ -223,7 +223,7 @@ const searchBook = async () => {
     retailPrice.value.value = ''
     categories.value.value = ''
     description.value.value = ''
-    image.value = ''
+    image.value.value = ''
   }
 }
 </script>
