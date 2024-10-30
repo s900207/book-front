@@ -213,17 +213,16 @@ const submit = handleSubmit(async (values) => {
       console.log(pair[0] + ': ' + pair[1])
     }
 
-    // 上傳圖片到 Cloudinary
-    const cloudinaryResponse = await apiAuth.post('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', fd, {
+    const response = await apiAuth.post('/upload', fd, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
 
     // 根據上傳結果更新表單數據
-    if (cloudinaryResponse.data.secure_url) {
+    if (response.data.secure_url) {
       // 將 Cloudinary 返回的圖片 URL 添加到表單數據中
-      fd.append('imageUrl', cloudinaryResponse.data.secure_url)
+      fd.append('imageUrl', response.data.secure_url)
     }
 
     await apiAuth.post('/books', fd)
