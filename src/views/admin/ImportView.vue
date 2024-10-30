@@ -74,7 +74,7 @@ VContainer
         VRow.text-center.mb-5(cols="12")
           VCol
             VSpacer
-            VBtn(color="green" type="submit" :loading="isSubmitting") 新增
+            VBtn(color="green" type="submit" :loading="isSubmitting") 送出
   </template>
 
 <script setup>
@@ -135,50 +135,6 @@ const image = useField('image')
 const maturityRating = useField('maturityRating')
 const buyLink = useField('buyLink')
 
-const submit = handleSubmit(async (values) => {
-  console.log(values)
-  try {
-    const fd = new FormData()
-    for (const key in values) {
-      fd.append(key, values[key])
-    }
-    if (image.value) {
-      const imageBlob = await fetch(image.value).then(res => {
-        if (!res.ok) throw new Error('無法獲取圖片')
-        return res.blob()
-      })
-      const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
-      fd.append('image', imageFile)
-    }
-    await apiAuth.post('/books', fd, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    createSnackbar({
-      text: '新增成功',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'green',
-        location: 'bottom'
-      }
-    })
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    createSnackbar({
-      text,
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
-  }
-})
-
 const searchBook = async () => {
   if (!isbn.value.trim()) {
     return
@@ -234,4 +190,52 @@ const searchBook = async () => {
     image.value.value = ''
   }
 }
+
+const submit = handleSubmit(async (values) => {
+  console.log(values)
+  try {
+    const fd = new FormData()
+    for (const key in values) {
+      fd.append(key, values[key])
+    }
+    if (image.value) {
+      const imageBlob = await fetch(image.value).then(res => {
+        if (!res.ok) throw new Error('無法獲取圖片')
+        return res.blob()
+      })
+      const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
+      fd.append('image', imageFile)
+    }
+    for (const pair of fd.entries()) {
+      console.log(pair[0] + ': ' + pair[1])
+    }
+
+    await apiAuth.post('/books', fd, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    createSnackbar({
+      text: '新增成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+})
 </script>
