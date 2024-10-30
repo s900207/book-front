@@ -198,9 +198,10 @@ const submit = handleSubmit(async (values) => {
     for (const key in values) {
       fd.append(key, values[key])
     }
-
+    console.log(image.value.value)
     if (image.value.value) {
       const uploadResponse = await apiAuth.post('/upload', { imageUrl: image.value.value })
+      console.log(uploadResponse)
       if (uploadResponse.data.secure_url) {
         fd.append('imageUrl', uploadResponse.data.secure_url)
       }
