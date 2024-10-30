@@ -207,22 +207,20 @@ const submit = handleSubmit(async (values) => {
       })
 
       const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
-      fd.append('image', imageFile)
-    }
-    for (const pair of fd.entries()) {
-      console.log(pair[0] + ': ' + pair[1])
-    }
+      const imageFormData = new FormData()
+      imageFormData.append('image', imageFile)
 
-    const response = await apiAuth.post('/upload', fd, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+      const response = await apiAuth.post('/upload', imageFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      // 根據上傳結果更新表單數據
+      if (response.data.secure_url) {
+        // 將 Cloudinary 返回的圖片 URL 添加到表單數據中
+        fd.append('imageUrl', response.data.secure_url)
       }
-    })
-
-    // 根據上傳結果更新表單數據
-    if (response.data.secure_url) {
-      // 將 Cloudinary 返回的圖片 URL 添加到表單數據中
-      fd.append('imageUrl', response.data.secure_url)
     }
 
     await apiAuth.post('/books', fd)
