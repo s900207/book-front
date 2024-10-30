@@ -208,13 +208,24 @@ const submit = handleSubmit(async (values) => {
       const imageFile = new File([imageBlob], 'image.jpg', { type: imageBlob.type })
       fd.append('image', imageFile)
     }
-
-    // Log the FormData entries for debugging
     for (const pair of fd.entries()) {
       console.log(pair[0] + ': ' + pair[1])
     }
 
-    await apiAuth.post('/books', fd) // Content-Type 不需要明確設置
+    // 上傳圖片到 Cloudinary
+    const cloudinaryResponse = await apiAuth.post('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', fd, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    // 根據上傳結果更新表單數據
+    if (cloudinaryResponse.data.secure_url) {
+      // 將 Cloudinary 返回的圖片 URL 添加到表單數據中
+      fd.append('imageUrl', cloudinaryResponse.data.secure_url)
+    }
+
+    await apiAuth.post('/books', fd)
     createSnackbar({
       text: '新增成功',
       showCloseButton: false,
