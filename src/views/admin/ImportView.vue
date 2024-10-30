@@ -135,6 +135,38 @@ const image = useField('image')
 const maturityRating = useField('maturityRating')
 const buyLink = useField('buyLink')
 
+const submit = handleSubmit(async (values) => {
+  console.log(values)
+  try {
+    const fd = new FormData()
+    for (const key in values) {
+      fd.append(key, values[key])
+    }
+    await apiAuth.post('/books', fd)
+    createSnackbar({
+      text: '新增成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+})
+
 const searchBook = async () => {
   if (!isbn.value.trim()) {
     return
@@ -190,44 +222,4 @@ const searchBook = async () => {
     image.value.value = ''
   }
 }
-
-const submit = handleSubmit(async (values) => {
-  console.log(values)
-  try {
-    const fd = new FormData()
-    for (const key in values) {
-      fd.append(key, values[key])
-    }
-    console.log(image.value.value)
-    if (image.value.value) {
-      const uploadResponse = await apiAuth.post('/upload', { imageUrl: image.value.value })
-      console.log(uploadResponse)
-      if (uploadResponse.data.secure_url) {
-        fd.append('imageUrl', uploadResponse.data.secure_url)
-      }
-    }
-    await apiAuth.post('/books', fd)
-    createSnackbar({
-      text: '新增成功',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'green',
-        location: 'bottom'
-      }
-    })
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    createSnackbar({
-      text,
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
-  }
-})
 </script>
