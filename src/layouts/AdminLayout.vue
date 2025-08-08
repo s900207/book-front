@@ -15,7 +15,6 @@ VMain(style="background-color:#D3D3D3")
 <script setup>
 import { useUserStore } from '@/store/user'
 import { computed } from 'vue'
-import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const user = useUserStore()
 
