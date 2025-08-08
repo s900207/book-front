@@ -64,15 +64,12 @@ export default defineConfig({
             return 'vendor'
           }
         },
-        // 確保檔案名稱一致性
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
-    // 提高相容性
     target: 'es2015',
-    // 確保所有 chunks 都被正確處理
     assetsInlineLimit: 0
   }
 })

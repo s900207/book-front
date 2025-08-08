@@ -7,6 +7,7 @@
 // Styles
 import 'virtual:svg-icons-register'
 import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
 
 // Composables
 import { createVuetify } from 'vuetify'
@@ -30,6 +31,11 @@ export default createVuetify({
     messages: { zhHant }
   },
   icons: {
-    iconFont: 'md'
+    defaultSet: 'mdi',
+    sets: {
+      mdi: {
+        component: 'VIcon'
+      }
+    }
   }
 })
