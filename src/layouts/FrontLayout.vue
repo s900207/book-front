@@ -36,6 +36,7 @@ import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
