@@ -11,7 +11,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/book-front/', // 改為你的 GitHub repository 名稱
   plugins: [
     vue({
       template: { transformAssetUrls }
@@ -52,5 +52,27 @@ export default defineConfig({
   },
   server: {
     port: 3000
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // 控制代碼分割，避免檔案名稱衝突
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue')) return 'vue-vendor'
+            if (id.includes('vuetify')) return 'vuetify-vendor'
+            return 'vendor'
+          }
+        },
+        // 確保檔案名稱一致性
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    },
+    // 提高相容性
+    target: 'es2015',
+    // 確保所有 chunks 都被正確處理
+    assetsInlineLimit: 0
   }
 })

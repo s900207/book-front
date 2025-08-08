@@ -13,23 +13,18 @@ VNavigationDrawer(v-model="drawer" temporary location="right" v-if="isMobile" st
       template(#prepend)
         VIcon(icon="mdi-logout")
       VListItemTitle 登出
-//-這邊能補登入註冊，並放在望面，導覽列消去
-//- 導覽列
 VAppBar(color="#4d4637")
   VContainer.d-flex.align-center
     VBtn(to="/" :active="false")
       VAppBarTitle.text-h5 書評網
     VSpacer
-    //- 手機板導覽列
     template(v-if="isMobile")
       VAppBarNavIcon(@click="drawer = true")
-    //- 電腦版導覽列
     template(v-else)
       template(v-for="item in navItems" :key="item.to")
         VBtn(:to="item.to" :prepend-icon="item.icon" v-if="item.show") {{ item.text }}
           VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" floating)
       VBtn(prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout") 登出
-//- 頁面內容
 VMain(style="background-color:#f6eee0")
   RouterView
 </template>
@@ -46,18 +41,15 @@ const { apiAuth } = useApi()
 const router = useRouter()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
-// 手機版判斷
 const { mobile } = useDisplay()
 const isMobile = computed(() => mobile.value)
 
-// 手機版惻欄開關
 const drawer = ref(false)
 
-// 導覽列項目
 const navItems = computed(() => {
   return [
     { to: '/mybook', text: '我的最愛書籍', icon: 'mdi-book-account', show: user.isLogin },
-    // { to: '/article', text: '文章', icon: 'mdi-book', show: true },
+    { to: '/article', text: '文章', icon: 'mdi-book', show: false },
     { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
     { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
     { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
