@@ -57,16 +57,16 @@ const routes = [
           admin: false
         }
       },
-      {
-        path: 'article',
-        name: 'Article',
-        component: () => import('@/views/front/ArticleView.vue'),
-        meta: {
-          title: '書評網 | 文章',
-          login: false,
-          admin: false
-        }
-      },
+      // {
+      //   path: 'article',
+      //   name: 'Article',
+      //   component: () => import('@/views/front/ArticleView.vue'),
+      //   meta: {
+      //     title: '書評網 | 文章',
+      //     login: false,
+      //     admin: false
+      //   }
+      // },
       {
         path: 'cart',
         name: 'Cart',
@@ -113,26 +113,26 @@ const routes = [
           admin: true
         }
       },
-      {
-        path: 'article',
-        name: 'AdminProducts',
-        component: () => import('@/views/admin/ArticleView.vue'),
-        meta: {
-          title: '購物網 | 文章管理',
-          login: true,
-          admin: true
-        }
-      },
-      {
-        path: 'report',
-        name: 'AdminReport',
-        component: () => import('@/views/admin/ReportView.vue'),
-        meta: {
-          title: '購物網 | 檢舉管理',
-          login: true,
-          admin: true
-        }
-      },
+      // {
+      //   path: 'article',
+      //   name: 'AdminProducts',
+      //   component: () => import('@/views/admin/ArticleView.vue'),
+      //   meta: {
+      //     title: '購物網 | 文章管理',
+      //     login: true,
+      //     admin: true
+      //   }
+      // },
+      // {
+      //   path: 'report',
+      //   name: 'AdminReport',
+      //   component: () => import('@/views/admin/ReportView.vue'),
+      //   meta: {
+      //     title: '購物網 | 檢舉管理',
+      //     login: true,
+      //     admin: true
+      //   }
+      // },
       {
         path: 'orders',
         name: 'AdminOrders',
@@ -151,22 +151,6 @@ const routes = [
           title: '書評網 | 引入書籍',
           login: false,
           admin: false
-        }
-      }
-    ]
-  },
-  {
-    path: '/user',
-    component: () => import('@/layouts/UserLayout.vue'),
-    children: [
-      {
-        path: '',
-        name: 'UserHome',
-        component: () => import('@/views/user/HomeView.vue'),
-        meta: {
-          title: '購物網 | 管理',
-          login: true,
-          admin: true
         }
       }
     ]
