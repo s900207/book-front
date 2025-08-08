@@ -11,6 +11,7 @@ import { registerPlugins } from '@/plugins'
 import App from './App.vue'
 import svgIcon from '@/components/svgIcon/svgIcon.vue'
 import vuetify from './plugins/vuetify'
+import '@mdi/font/css/materialdesignicons.css'
 
 // Composables
 import { createApp } from 'vue'

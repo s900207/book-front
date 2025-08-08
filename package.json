@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@boindil/vue-file-agent-next": "^1.0.5",
-    "@ckeditor/ckeditor5-build-classic": "^41.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^39.0.2",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@iconify-json/mdi": "^1.2.0",
     "@mdi/font": "^7.4.47",
@@ -38,7 +38,7 @@
     "sass": "^1.70.0",
     "unplugin-fonts": "^1.0.3",
     "vite": "^4.2.0",
-    "vite-plugin-svg-icons": "^2.0.1",
+    "vite-plugin-svg-icons": "^0.1.0",
     "vite-plugin-vuetify": "^1.0.0"
   }
 }
