@@ -29,10 +29,16 @@ export default defineConfig({
       }
     }),
     createSvgIconsPlugin({
-      // Specify the icon folder to be cached
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-      // Specify symbolId format
-      symbolId: 'icon-[dir]-[name]'
+      symbolId: 'icon-[dir]-[name]',
+      svgoOptions: {
+        plugins: [
+          {
+            name: 'removeViewBox',
+            active: false
+          }
+        ]
+      }
     })
   ],
   define: { 'process.env': {} },
@@ -56,7 +62,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // 控制代碼分割，避免檔案名稱衝突
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
             if (id.includes('vue')) return 'vue-vendor'
