@@ -12,6 +12,7 @@
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@iconify-json/mdi": "^1.2.0",
+    "@mdi/font": "^7.4.47",
     "axios": "^1.6.7",
     "gsap": "^3.12.5",
     "mdi-vue": "^3.0.13",
