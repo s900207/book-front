@@ -28,7 +28,7 @@
     "yup": "^1.3.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vue/eslint-config-standard": "^8.0.1",
     "@vue/language-plugin-pug": "^1.8.27",
     "eslint": "^8.22.0",
@@ -37,8 +37,8 @@
     "pug": "^3.0.2",
     "sass": "^1.70.0",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^4.2.0",
+    "vite": "^7.1.1",
     "vite-plugin-svg-icons": "^0.1.0",
-    "vite-plugin-vuetify": "^1.0.0"
+    "vite-plugin-vuetify": "^2.1.2"
   }
 }
