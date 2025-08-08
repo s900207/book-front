@@ -1,21 +1,114 @@
 <template lang="pug">
-VContainer
+  VContainer
     VRow
-      VCol(cols="9" md="11")
+      VCol(cols="10" md="11")
         VTextField(
-          class="mx-auto mt-5"
-          menu-icon=""
-          placeholder="請輸入書籍名稱"
-          v-model="searchTerm"
-        )
-          template(v-slot:prepend-inner)
-            svgIcon(href="#icon-magnify")
-      VCol(cols="3" md="1" class="d-flex align-center justify-end")
-        VSwitch(v-model="showAll" label="18+")
+            class="mx-auto mt-5"
+            menu-icon=""
+            placeholder="請輸入書籍名稱"
+            prepend-inner-icon="mdi-magnify"
+            v-model="searchTerm"
+          )
+      VCol(cols="2" md="1" class="d-flex  mt-2 justify-end")
+        .adult-switch-container.mt-5.d-flex.align-center
+          VSwitch(
+            v-model="showAll"
+            class="adult-switch"
+            :color="showAll ? 'red' : 'green'"
+            hide-details
+            density="compact"
+          )
+          .switch-indicators.ml-2
+            VIcon(v-if="!showAll" color="green" size="small") mdi-shield-check
+            .adult-badge(v-if="showAll")
+              span.adult-text 18+
     VRow
       VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
         BooksCard(v-bind="books")
-</template>
+  </template>
+
+  <style scoped>
+  .adult-switch-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+
+  .adult-switch {
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .adult-switch :deep(.v-switch__track) {
+    transition: all 0.3s ease;
+  }
+
+  .adult-switch :deep(.v-switch__thumb) {
+    transition: all 0.3s ease;
+  }
+
+  .adult-switch:not(.v-switch--inset) :deep(.v-switch__track) {
+    background-color: rgba(76, 175, 80, 0.3) !important;
+  }
+
+  .adult-switch.v-input--is-dirty:deep(.v-switch__track) {
+    background-color: rgba(244, 67, 54, 0.3) !important;
+  }
+
+  /* 指示器容器 */
+  .switch-indicators {
+    display: flex;
+    align-items: center;
+    min-width: 45px;
+    justify-content: center;
+  }
+
+  /* 18+ 標示 */
+  .adult-badge {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    border: 1px solid #b71c1c;
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+    animation: pulse-red 2s infinite;
+  }
+
+  .adult-text {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+  .adult-switch-container::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #666;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .adult-switch-container:hover::after {
+    opacity: 1;
+  }
+
+  .adult-switch-container[data-tooltip="顯示成人內容"]::after {
+    color: #f44336;
+  }
+
+  .adult-switch-container[data-tooltip="隱藏成人內容"]::after {
+    color: #4CAF50;
+  }
+  </style>
 
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue'
@@ -23,7 +116,6 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
-import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()

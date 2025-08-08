@@ -73,7 +73,7 @@ const routes = [
         component: () => import('@/views/front/CartView.vue'),
         meta: {
           title: '書評網 | 購物車',
-          login: true,
+          login: false,
           admin: false
         }
       },
@@ -151,6 +151,22 @@ const routes = [
           title: '書評網 | 引入書籍',
           login: false,
           admin: false
+        }
+      }
+    ]
+  },
+  {
+    path: '/user',
+    component: () => import('@/layouts/UserLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'UserHome',
+        component: () => import('@/views/user/HomeView.vue'),
+        meta: {
+          title: '購物網 | 管理',
+          login: true,
+          admin: true
         }
       }
     ]

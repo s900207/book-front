@@ -3,15 +3,15 @@
 VNavigationDrawer(v-model="drawer" temporary location="right" v-if="isMobile" style="background-color:#4d4637;color:#f6eee0;margin-top: 64px" )
   VList(nav)
     template(v-for="item in navItems" :key="item.to")
-      VListItem(:to="item.to" v-if="item.show" class="nav-item")
+      VListItem(:to="item.to" v-if="item.show")
         template(#prepend)
-          svgIcon(:href="item.svgIcon" v-if="item.svgIcon" class="nav-icon")
+          VIcon(:icon="item.icon")
         template(#append)
           VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" inline)
         VListItemTitle {{ item.text }}
-    VListItem(v-if="user.isLogin" @click="logout" class="nav-item")
+    VListItem(v-if="user.isLogin" @click="logout")
       template(#prepend)
-        svgIcon(:href="'#icon-logout'" class="nav-icon")
+        VIcon(icon="mdi-logout")
       VListItemTitle 登出
 //-這邊能補登入註冊，並放在望面，導覽列消去
 //- 導覽列
@@ -22,19 +22,13 @@ VAppBar(color="#4d4637")
     VSpacer
     //- 手機板導覽列
     template(v-if="isMobile")
-      VBtn(@click="drawer = true")
-        svgIcon(href="#icon-menu")
+      VAppBarNavIcon(@click="drawer = true")
     //- 電腦版導覽列
     template(v-else)
       template(v-for="item in navItems" :key="item.to")
         VBtn(:to="item.to" :prepend-icon="item.icon" v-if="item.show") {{ item.text }}
-          template(v-slot:prepend)
-            svgIcon(:href="item.svgIcon" )
           VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" floating)
-      VBtn(v-if="user.isLogin" @click="logout" class="nav-item")
-        template(v-slot:prepend)
-            svgIcon(href="#icon-logout")
-        span 登出
+      VBtn(prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout") 登出
 //- 頁面內容
 VMain(style="background-color:#f6eee0")
   RouterView
@@ -47,7 +41,6 @@ import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
-import svgIcon from '@/components/svgIcon/svgIcon.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
@@ -63,13 +56,13 @@ const drawer = ref(false)
 // 導覽列項目
 const navItems = computed(() => {
   return [
-    { to: '/mybook', text: '我的書籍', svgIcon: '#icon-book-account', show: user.isLogin },
-    { to: '/article', text: '文章', svgIcon: '#icon-book', show: false },
-    { to: '/admin', text: '管理員管理', svgIcon: '#icon-cog', show: user.isLogin && user.isAdmin },
-    { to: '/cart', text: '購物車', svgIcon: '#icon-cart', show: true },
-    { to: '/orders', text: '訂單', svgIcon: '#icon-list-box', show: user.isLogin },
-    { to: '/register', text: '註冊', svgIcon: '#icon-account-plus', show: !user.isLogin },
-    { to: '/login', text: '登入', svgIcon: '#icon-login', show: !user.isLogin }
+    { to: '/mybook', text: '我的最愛書籍', icon: 'mdi-book-account', show: user.isLogin },
+    // { to: '/article', text: '文章', icon: 'mdi-book', show: true },
+    { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
+    { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
+    { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
+    { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLogin },
+    { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin }
   ]
 })
 
@@ -101,20 +94,3 @@ const logout = async () => {
   }
 }
 </script>
-
-<style scoped>
-.nav-item {
-  display: flex;
-  align-items: center;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-}
-
-.nav-item-title {
-  font-size: 16px;
-}
-</style>
