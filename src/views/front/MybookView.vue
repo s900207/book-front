@@ -25,7 +25,6 @@
               @keydown.enter="tableApplySearch"
             )
 
-            // 清理提示
             VAlert(
               v-if="cleanupInfo"
               type="warning"
@@ -73,7 +72,9 @@ const tableBooks = ref([])
 const cleanupInfo = ref(null)
 const MAX_CHARS = 55
 
-// 輔助函數
+const bookCache = new Map()
+const isCleaningUp = ref(false)
+
 const getImageSrc = (item) => {
   return item?.result?.image || item?.image || ''
 }
@@ -85,8 +86,6 @@ const getUserRating = (item) => {
   )
   return userReview?.rating || 0
 }
-
-// 導航到書本詳細頁面的函數已移除，改用 RouterLink
 
 const tableHeaders = [
   { title: '圖片', align: 'center', sortable: false, key: 'image' },
@@ -128,24 +127,98 @@ const tableLoading = ref(true)
 const tableItemsLength = ref(0)
 const tableSearch = ref('')
 
-// 清理無效的 favorite 記錄
-const cleanupInvalidFavorites = async (invalidBookIds) => {
-  if (!invalidBookIds || invalidBookIds.length === 0) return
+const fetchBookDetails = async (bookId) => {
+  // 檢查快取
+  if (bookCache.has(bookId)) {
+    return bookCache.get(bookId)
+  }
 
   try {
-    console.log('準備清理無效的 favorite 記錄:', invalidBookIds)
+    const response = await apiAuth.get(`/books/${bookId}`)
+    const bookData = response.data
 
-    // 批量刪除無效的 favorite 記錄
-    const cleanupPromises = invalidBookIds.map(bookId =>
-      apiAuth.delete(`/users/favorite/${bookId}`).catch(error => {
+    bookCache.set(bookId, bookData)
+    return bookData
+  } catch (error) {
+    if (error.response?.status === 404) {
+      bookCache.set(bookId, null)
+      return null
+    }
+    throw error
+  }
+}
+
+const fetchBooksInBatches = async (bookIds, batchSize = 3) => {
+  const results = []
+  const invalidIds = []
+
+  for (let i = 0; i < bookIds.length; i += batchSize) {
+    const batch = bookIds.slice(i, i + batchSize)
+
+    const batchPromises = batch.map(async (bookId) => {
+      try {
+        const book = await fetchBookDetails(bookId)
+        return { bookId, book, valid: book !== null }
+      } catch (error) {
+        console.warn(`獲取書籍 ${bookId} 失敗:`, error)
+        return { bookId, book: null, valid: false }
+      }
+    })
+
+    const batchResults = await Promise.all(batchPromises)
+
+    for (const result of batchResults) {
+      if (result.valid && result.book) {
+        results.push(result.book)
+      } else {
+        invalidIds.push(result.bookId)
+      }
+    }
+
+    if (i + batchSize < bookIds.length) {
+      await new Promise(resolve => setTimeout(resolve, 100))
+    }
+  }
+
+  return { validBooks: results, invalidIds }
+}
+
+const cleanupInvalidFavorites = async (invalidBookIds) => {
+  if (!invalidBookIds || invalidBookIds.length === 0 || isCleaningUp.value) return
+
+  isCleaningUp.value = true
+
+  try {
+    console.log('開始清理無效的 favorite 記錄:', invalidBookIds)
+    cleanupInfo.value = `發現 ${invalidBookIds.length} 本無效書籍，正在清理...`
+
+    const cleanupPromises = invalidBookIds.map(async (bookId) => {
+      try {
+        await apiAuth.delete(`/users/favorite/${bookId}`)
+        return { bookId, success: true }
+      } catch (error) {
+        if (error.response?.status === 404) {
+          return { bookId, success: true, alreadyRemoved: true }
+        }
         console.warn(`清理 favorite ${bookId} 失敗:`, error)
-        return null
-      })
-    )
+        return { bookId, success: false, error }
+      }
+    })
 
-    await Promise.all(cleanupPromises)
+    const results = await Promise.all(cleanupPromises)
+    const successCount = results.filter(r => r.success).length
+
+    if (successCount > 0) {
+      cleanupInfo.value = `已清理 ${successCount} 筆無效記錄`
+      setTimeout(() => {
+        cleanupInfo.value = null
+      }, 3000)
+    }
   } catch (error) {
     console.error('清理 favorite 記錄時發生錯誤:', error)
+    cleanupInfo.value = '清理過程中發生錯誤'
+  } finally {
+    isCleaningUp.value = false
   }
 }
 
@@ -156,7 +229,6 @@ const tableLoadItems = async () => {
   try {
     console.log('開始載入使用者喜愛書籍...')
 
-    // 獲取 favorite IDs
     const { data: favoriteData } = await apiAuth.get('/users/favorite')
     console.log('獲取 favorite IDs:', favoriteData)
 
@@ -170,69 +242,25 @@ const tableLoadItems = async () => {
 
     console.log(`找到 ${favoriteBookIds.length} 本喜愛書籍`)
 
-    // 獲取書籍詳情並記錄無效的 ID
-    const validBooks = []
-    const invalidBookIds = []
+    const { validBooks, invalidIds } = await fetchBooksInBatches(favoriteBookIds)
 
-    for (const bookId of favoriteBookIds) {
-      console.log(`嘗試獲取書籍 ID: ${bookId}`)
+    console.log(`有效書籍: ${validBooks.length}, 無效書籍: ${invalidIds.length}`)
 
-      // 嘗試多種可能的 API 端點
-      const possibleEndpoints = [
-          `/books/${bookId}`,
-          `/book/${bookId}`,
-          `/books/detail/${bookId}`,
-          `/api/books/${bookId}`
-      ]
-
-      let bookData = null
-      let bookFound = false
-
-      for (const endpoint of possibleEndpoints) {
-        try {
-          const response = await apiAuth.get(endpoint)
-          console.log(`成功使用端點 ${endpoint}:`, response.data)
-          bookData = response.data
-          bookFound = true
-          break
-        } catch (endpointError) {
-          // 如果是 404，表示書籍不存在
-          if (endpointError.response?.status === 404) {
-            console.log(`書籍 ${bookId} 不存在 (404)`)
-            continue
-          }
-          console.log(`端點 ${endpoint} 失敗:`, endpointError.response?.status)
-        }
-      }
-
-      if (bookFound && bookData) {
-        validBooks.push(bookData)
-      } else {
-        console.warn(`書籍 ${bookId} 不存在，加入清理列表`)
-        invalidBookIds.push(bookId)
-      }
+    if (invalidIds.length > 0) {
+      setTimeout(() => cleanupInvalidFavorites(invalidIds), 0)
     }
 
-    console.log(`有效書籍: ${validBooks.length}, 無效書籍: ${invalidBookIds.length}`)
-
-    // 清理無效的 favorite 記錄
-    if (invalidBookIds.length > 0) {
-      await cleanupInvalidFavorites(invalidBookIds)
-    }
-
-    // 應用搜尋過濾
     let filteredBooks = validBooks
     if (tableSearch.value) {
+      const searchTerm = tableSearch.value.toLowerCase()
       filteredBooks = validBooks.filter(book => {
         const title = book?.result?.title || book?.title || ''
         const authors = book?.result?.authors || book?.authors || ''
-        const searchTerm = tableSearch.value.toLowerCase()
         return title.toLowerCase().includes(searchTerm) ||
-                 authors.toLowerCase().includes(searchTerm)
+               authors.toLowerCase().includes(searchTerm)
       })
     }
 
-    // 應用分頁
     const start = (tablePage.value - 1) * tableItemsPerPage.value
     const end = start + tableItemsPerPage.value
     tableBooks.value = filteredBooks.slice(start, end)
@@ -254,16 +282,15 @@ const tableLoadItems = async () => {
 
     tableBooks.value = []
     tableItemsLength.value = 0
+  } finally {
+    tableLoading.value = false
   }
-
-  tableLoading.value = false
 }
-
-// 初始載入
-tableLoadItems()
 
 const tableApplySearch = () => {
   tablePage.value = 1
   tableLoadItems()
 }
+
+tableLoadItems()
 </script>
