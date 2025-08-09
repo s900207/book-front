@@ -8,6 +8,34 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
+function removePreloadFonts() {
+  return {
+    name: 'remove-preload-fonts',
+    generateBundle(options, bundle) {
+      // 處理 HTML 文件
+      for (const fileName in bundle) {
+        const file = bundle[fileName]
+        if (fileName.includes('.html') || file.type === 'chunk') {
+          if (file.source && typeof file.source === 'string') {
+            // 移除 MDI 字體的預載入標籤
+            file.source = file.source.replace(
+              /<link[^>]*rel=["']preload["'][^>]*materialdesignicons[^>]*>/gi,
+              ''
+            )
+          }
+        }
+      }
+    },
+    transformIndexHtml(html) {
+      // 移除 HTML 中的預載入標籤
+      return html.replace(
+        /<link[^>]*rel=["']preload["'][^>]*materialdesignicons[^>]*>/gi,
+        ''
+      )
+    }
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/book-front/', 
