@@ -189,9 +189,6 @@ const cleanupInvalidFavorites = async (invalidBookIds) => {
   isCleaningUp.value = true
 
   try {
-    console.log('開始清理無效的 favorite 記錄:', invalidBookIds)
-    cleanupInfo.value = `發現 ${invalidBookIds.length} 本無效書籍，正在清理...`
-
     const cleanupPromises = invalidBookIds.map(async (bookId) => {
       try {
         await apiAuth.delete(`/users/favorite/${bookId}`)
@@ -200,28 +197,16 @@ const cleanupInvalidFavorites = async (invalidBookIds) => {
         if (error.response?.status === 404) {
           return { bookId, success: true, alreadyRemoved: true }
         }
-        console.warn(`清理 favorite ${bookId} 失敗:`, error)
         return { bookId, success: false, error }
       }
     })
 
-    const results = await Promise.all(cleanupPromises)
-    const successCount = results.filter(r => r.success).length
-
-    if (successCount > 0) {
-      cleanupInfo.value = `已清理 ${successCount} 筆無效記錄`
-      setTimeout(() => {
-        cleanupInfo.value = null
-      }, 3000)
-    }
+    await Promise.all(cleanupPromises)
   } catch (error) {
-    console.error('清理 favorite 記錄時發生錯誤:', error)
-    cleanupInfo.value = '清理過程中發生錯誤'
   } finally {
     isCleaningUp.value = false
   }
 }
-
 const tableLoadItems = async () => {
   tableLoading.value = true
   cleanupInfo.value = null
