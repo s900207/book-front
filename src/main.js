@@ -15,6 +15,10 @@ import '@mdi/font/css/materialdesignicons.css'
 // Composables
 import { createApp } from 'vue'
 
+setTimeout(() => {
+  import('@mdi/font/css/materialdesignicons.css')
+}, 100)
+
 const app = createApp(App)
 
 registerPlugins(app)

@@ -2,6 +2,7 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
+import path from 'path'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -9,7 +10,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/book-front/', // 改為你的 GitHub repository 名稱
+  base: '/book-front/', 
   plugins: [
     vue({
       template: { transformAssetUrls }
@@ -52,13 +53,22 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('vue')) return 'vue-vendor'
             if (id.includes('vuetify')) return 'vuetify-vendor'
+            if (id.includes('@mdi/font')) return 'mdi-vendor'
             return 'vendor'
           }
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && /\.(woff|woff2|eot|ttf|otf)$/i.test(assetInfo.name)) {
+            return 'fonts/[name]-[hash][extname]'
+          }
+          return 'assets/[name]-[hash][extname]'
+        }
       }
     },
+    target: 'es2015',
+    assetsInlineLimit: 0 
   }
 })
