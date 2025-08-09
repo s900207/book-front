@@ -1,5 +1,5 @@
 <template lang="pug">
-  VCard.books-card( width="250px" height="370px" class="hover-card")
+  VCard.books-card( width="250px" height="380px" class="hover-card")
     // 成人內容標籤
     .mature-badge(v-if="maturityRating === 'MATURE'")
       span.mature-text 18+

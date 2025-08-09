@@ -2,8 +2,6 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import path from 'path'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -26,18 +24,6 @@ export default defineConfig({
           name: 'Roboto',
           styles: 'wght@100;300;400;500;700;900'
         }]
-      }
-    }),
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-      symbolId: 'icon-[dir]-[name]',
-      svgoOptions: {
-        plugins: [
-          {
-            name: 'removeViewBox',
-            active: false
-          }
-        ]
       }
     })
   ],
@@ -74,7 +60,5 @@ export default defineConfig({
         assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
-    target: 'es2015',
-    assetsInlineLimit: 0
   }
 })

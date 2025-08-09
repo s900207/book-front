@@ -9,7 +9,6 @@ import { registerPlugins } from '@/plugins'
 
 // Components
 import App from './App.vue'
-import svgIcon from '@/components/svgIcon/svgIcon.vue'
 import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 
@@ -20,6 +19,5 @@ const app = createApp(App)
 
 registerPlugins(app)
 
-app.component('svgIcon', svgIcon)
 app.mount('#app')
 app.use(vuetify)

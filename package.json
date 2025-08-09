@@ -38,7 +38,6 @@
     "sass": "^1.70.0",
     "unplugin-fonts": "^1.0.3",
     "vite": "^7.1.1",
-    "vite-plugin-svg-icons": "^0.1.0",
     "vite-plugin-vuetify": "^2.1.2"
   }
 }
