@@ -212,8 +212,6 @@ const tableLoadItems = async () => {
   cleanupInfo.value = null
 
   try {
-    console.log('開始載入使用者喜愛書籍...')
-
     const { data: favoriteData } = await apiAuth.get('/users/favorite')
     console.log('獲取 favorite IDs:', favoriteData)
 
@@ -225,12 +223,7 @@ const tableLoadItems = async () => {
       return
     }
 
-    console.log(`找到 ${favoriteBookIds.length} 本喜愛書籍`)
-
     const { validBooks, invalidIds } = await fetchBooksInBatches(favoriteBookIds)
-
-    console.log(`有效書籍: ${validBooks.length}, 無效書籍: ${invalidIds.length}`)
-
     if (invalidIds.length > 0) {
       setTimeout(() => cleanupInvalidFavorites(invalidIds), 0)
     }
@@ -250,8 +243,6 @@ const tableLoadItems = async () => {
     const end = start + tableItemsPerPage.value
     tableBooks.value = filteredBooks.slice(start, end)
     tableItemsLength.value = filteredBooks.length
-
-    console.log(`最終顯示書籍數量: ${tableBooks.value.length}`)
   } catch (error) {
     console.error('載入失敗:', error)
     const text = error?.response?.data?.message || '載入喜愛書籍失敗'
