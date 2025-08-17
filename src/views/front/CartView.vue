@@ -9,7 +9,7 @@
 
       // 空購物車提示
       VCard(v-else-if="cart.length === 0" class="text-center pa-8")
-        VIcon(size="64" color="grey") mdi-cart-outline
+        VIcon(size="64" color="grey") {{ mdiCartOutline }}
         h3.mt-4.mb-2 購物車是空的
         p.text-grey 還沒有添加任何商品到購物車
         VBtn(color="primary" to="/") 繼續購物
@@ -52,11 +52,11 @@
           | ${{ item.book.retailPrice }}
 
         template(#[`item.total`]="{ item }")
-          | ${{ (item.book.retailPrice * item.quantity).toFixed(2) }}
+          | ${{ item.book.retailPrice * item.quantity }}
 
     VCol.text-center(cols="12" v-if="cart.length > 0")
       VCard.pa-4
-        h3 總金額: ${{ total.toFixed(2) }}
+        h3 總金額: ${{ total }}
         VBtn(
           color="green"
           size="large"
@@ -77,7 +77,8 @@ import { useRouter } from 'vue-router'
 import {
   mdiMinus,
   mdiPlus,
-  mdiDelete
+  mdiDelete,
+  mdiCartOutline
 } from '@mdi/js'
 
 const { apiAuth } = useApi()
@@ -268,7 +269,7 @@ onMounted(() => {
 
   <style scoped>
   .v-data-table {
-    background-color: transparent;
+    background-color: white;
   }
 
   .v-img {
@@ -276,7 +277,7 @@ onMounted(() => {
   }
 
   h1 {
-    color: #1976d2;
+    color: #000;
     margin-bottom: 16px;
   }
   </style>
