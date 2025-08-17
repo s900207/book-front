@@ -19,7 +19,8 @@ import { computed } from 'vue'
 import {
   mdiBookArrowUp,
   mdiBookSync,
-  mdiListBox
+  mdiListBox,
+  mdiHome
 
 } from '@mdi/js'
 
@@ -31,7 +32,7 @@ const navItems = [
   { to: '/admin/orders', text: '訂單管理', icon: mdiListBox },
   // { to: '/admin/article', text: '文章管理', icon: 'mdi-book' },
   // { to: '/admin/report', text: '檢舉管理', icon: 'mdi-alert' },
-  { to: '/', text: '回首頁', icon: 'mdi-home' }
+  { to: '/', text: '回首頁', icon: mdiHome }
 ]
 
 const prependAvatar = computed(() => {

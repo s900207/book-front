@@ -35,7 +35,7 @@ VContainer
           template(v-else)
             p {{ books.description.substring(0, 500) }}
         VCol.text-center
-          VBtn(v-if="books.description.length > 100")(color="#4d4637" @click="showFullDescription = !showFullDescription" :icon="showFullDescription ? 'mdi-chevron-up' : 'mdi-chevron-down'")
+          VBtn(v-if="books.description.length > 100")(color="#4d4637" @click="showFullDescription = !showFullDescription" :icon="showFullDescription ? mdiChevronUp : mdiChevronDown")
       VRow
         VCol(cols="12")
           h3 新增書評:
@@ -86,7 +86,10 @@ import {
   mdiHeartPlus,
   mdiHeartMinus,
   mdiCart,
-  mdiPencil
+  mdiPencil,
+  mdiChevronUp,
+  mdiChevronDown
+
 } from '@mdi/js'
 
 const route = useRoute()

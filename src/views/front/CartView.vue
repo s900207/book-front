@@ -94,7 +94,7 @@ const isSubmitting = ref(false)
 
 // 表格標題配置
 const headers = [
-  { title: '書本圖片', key: 'book.image', align: 'center', sortable: false },
+  { title: '書本圖片', key: 'book.image', sortable: false },
   { title: '書本名稱', key: 'book.title' },
   { title: '單價', key: 'book.retailPrice', align: 'center' },
   { title: '數量', key: 'quantity', align: 'center', sortable: false },
