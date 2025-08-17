@@ -6,7 +6,7 @@
             class="mx-auto mt-5"
             menu-icon=""
             placeholder="請輸入書籍名稱"
-            prepend-inner-icon="mdi-magnify"
+            :prepend-inner-icon="mdiMagnify"
             v-model="searchTerm"
           )
       VCol(cols="2" md="1" class="d-flex  mt-2 justify-end")
@@ -19,7 +19,7 @@
             density="compact"
           )
           .switch-indicators.ml-2
-            VIcon(v-if="!showAll" color="green" size="small") mdi-shield-check
+            VIcon(v-if="!showAll" color="green" size="small" :icon="mdiShieldCheck")
             .adult-badge(v-if="showAll")
               span.adult-text 18+
     VRow
@@ -116,6 +116,11 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
 import gsap from 'gsap'
+
+import {
+  mdiShieldCheck,
+  mdiMagnify
+} from '@mdi/js'
 
 const { api } = useApi()
 const createSnackbar = useSnackbar()

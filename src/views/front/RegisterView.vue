@@ -11,27 +11,27 @@ VContainer
           minlength="4" maxlength="20" counter
           v-model="account.value.value"
           :error-messages="account.errorMessage.value"
-          prepend-icon="mdi-account"
+          :prepend-icon="mdiAccount"
         )
         VTextField(
           label="信箱" type="email"
           v-model="email.value.value"
           :error-messages="email.errorMessage.value"
-          prepend-icon="mdi-email"
+          :prepend-icon="mdiMail"
         )
         VTextField(
           label="密碼" type="password"
           minlength="4" maxlength="20" counter
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
-          prepend-icon="mdi-key"
+          :prepend-icon="mdiKey"
         )
         VTextField(
           label="確認密碼" type="password"
           minlength="4" maxlength="20" counter
           v-model="passwordConfirm.value.value"
           :error-messages="passwordConfirm.errorMessage.value"
-          prepend-icon="mdi-key-change"
+          :prepend-icon="mdiKeyChange"
         )
         VBtn(type="submit" color="#4d4637") 註冊
 </template>
@@ -43,6 +43,13 @@ import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
+
+import {
+  mdiAccount,
+  mdiMail,
+  mdiKey,
+  mdiKeyChange
+} from '@mdi/js'
 
 const { api } = useApi()
 

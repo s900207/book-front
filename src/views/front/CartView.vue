@@ -8,11 +8,11 @@ VContainer
       template(v-slot:[`item.book.image`]="{ item }")
         VImg(:src="item.book.image" alt="Book Image" max-height="100" max-width="60")
       template(#[`item.quantity`]="{ item }")
-        VBtn(variant="text" icon="mdi-minus" color="red" @click="addCart(item.book._id, -1)")
+        VBtn(variant="text" :icon="mdiMinus" color="red" @click="addCart(item.book._id, -1)")
         | {{ item.quantity }}
-        VBtn(variant="text" icon="mdi-plus" color="green" @click="addCart(item.book._id, 1)")
+        VBtn(variant="text" :icon="mdiPlus" color="green" @click="addCart(item.book._id, 1)")
       template(#[`item.action`]="{ item }")
-        VBtn(variant="text" icon="mdi-delete" color="red" @click="addCart(item.book._id, item.quantity * -1)")
+        VBtn(variant="text" :icon="mdiDelete" color="red" @click="addCart(item.book._id, item.quantity * -1)")
   VCol.text-center(cols="12")
     p 總金額: {{ total }}
     VBtn(color="green" :disabled="!canCheckout" :loading="isSubmitting" @click="checkout") 結帳
@@ -24,6 +24,12 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
+
+import {
+  mdiMinus,
+  mdiPlus,
+  mdiDelete
+} from '@mdi/js'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()

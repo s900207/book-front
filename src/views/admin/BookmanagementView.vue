@@ -19,7 +19,7 @@
           template(#top)
             VTextField(
               label="搜尋"
-              append-icon="mdi-magnify"
+              :append-icon="mdiMagnify"
               v-model="tableSearch"
               @click:append="tableApplySearch"
               @keydown.enter="tableApplySearch"
@@ -66,7 +66,7 @@
                             class="align-center justify-center hover-overlay"
                             style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s;"
                           )
-                            VIcon(color="white" size="48") mdi-camera
+                            VIcon(color="white" size="48" :icon="mdiCamera")
                             div(style="color: white; margin-top: 8px;") 點擊更換圖片
 
                         // 沒有圖片時的上傳區域
@@ -77,7 +77,7 @@
                           hover
                         )
                           div(class="text-center")
-                            VIcon(size="64" color="grey") mdi-camera-plus
+                            VIcon(size="64" color="grey" :icon="mdiCameraPlus")
                             div(class="mt-2 text-grey") 點擊上傳圖片
 
                         // 隱藏的檔案輸入
@@ -96,7 +96,7 @@
                           variant="tonal"
                           class="mt-3"
                         )
-                          VIcon(class="mr-2") mdi-file-image
+                          VIcon(class="mr-2" :icon="mdiFileImage")
                           | 已選擇: {{ selectedFile.name }}
 
                 VCol(cols="12")
@@ -116,6 +116,13 @@
 import { ref } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+
+import {
+  mdiMagnify,
+  mdiCameraPlus,
+  mdiCamera,
+  mdiFileImage
+} from '@mdi/js'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()

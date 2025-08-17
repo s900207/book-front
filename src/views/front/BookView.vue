@@ -6,9 +6,9 @@ VContainer
       VCardActions
         VRow.justify-center.align-center
           VCol(cols="6")
-            VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+            VBtn(:prepend-icon="isFavorite ? mdiHeartMinus : mdiHeartPlus" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite") {{ isFavorite ? '取消最愛' : '加入最愛' }}
           VCol(cols="6")
-            VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart") 加入購物車
+            VBtn(color="primary" :prepend-icon="mdiCart" @click="addCart") 加入購物車
     VCol(cols="12" md="9")
       h1 {{ books.title }}
       h2 {{ books.authors }}
@@ -60,7 +60,7 @@ VContainer
                     VListItemSubtitle.mb-5(:style="{ fontSize: '20px' }") {{ review.comment }}
                   VCol.d-flex.justify-end
                     VListItemAction
-                      VBtn(icon="mdi-pencil" color="#4d4637" @click="() => openDialog(review._id)")
+                      VBtn(:icon="mdiPencil" color="#4d4637" @click="() => openDialog(review._id)")
 VDialog(v-model="dialog" max-width="290")
   VForm(:disabled="isSubmitting" @submit.prevent="submit")
     VCard
@@ -81,6 +81,13 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
 import { useFavorite } from '@/composables/useFavorite'
+
+import {
+  mdiHeartPlus,
+  mdiHeartMinus,
+  mdiCart,
+  mdiPencil
+} from '@mdi/js'
 
 const route = useRoute()
 const router = useRouter()

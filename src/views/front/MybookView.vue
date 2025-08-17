@@ -19,7 +19,7 @@
           template(#top)
             VTextField(
               label="搜尋"
-              append-icon="mdi-magnify"
+              :append-icon="mdiMagnify"
               v-model="tableSearch"
               @click:append="tableApplySearch"
               @keydown.enter="tableApplySearch"
@@ -59,6 +59,10 @@ import { ref } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
+
+import {
+  mdiMagnify
+} from '@mdi/js'
 
 const { apiAuth } = useApi()
 const user = useUserStore()

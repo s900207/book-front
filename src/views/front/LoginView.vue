@@ -11,14 +11,14 @@ VContainer
           minlength="4" maxlength="20" counter
           v-model="account.value.value"
           :error-messages="account.errorMessage.value"
-          prepend-icon="mdi-account"
+          :prepend-icon="mdiAccount"
         )
         VTextField(
           label="密碼" type="password"
           minlength="4" maxlength="20" counter
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
-          prepend-icon="mdi-key"
+          :prepend-icon="mdikey"
         )
         VBtn(type="submit" color="#4d4637") 登入
 </template>
@@ -30,6 +30,11 @@ import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
+
+import {
+  mdiAccount,
+  mdikey
+} from '@mdi/js'
 
 const { api } = useApi()
 

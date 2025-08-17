@@ -12,7 +12,7 @@
             density="comfortable"
             menu-icon=""
             placeholder="請輸入書籍名稱或13碼的isbn進行搜尋"
-            prepend-inner-icon="mdi-magnify"
+            :prepend-inner-icon="mdiMagnify"
             rounded
             theme="light"
             variant="solo"
@@ -43,7 +43,8 @@
                       size="100"
                       color="grey-lighten-2"
                       class="mb-3"
-                    ) mdi-image-outline
+                      :icon=" mdiImageOutline"
+                    )
                     VChip(
                       v-if="imageSource === 'upload'"
                       color="green"
@@ -52,7 +53,7 @@
                     ) 上傳圖片
                     VBtn(
                       color="primary"
-                      prepend-icon="mdi-upload"
+                      :prepend-icon="mdiUpload"
                       @click="$refs.fileInput.click()"
                       :disabled="isSubmitting"
                       class="mt-1"
@@ -129,6 +130,13 @@ import { useField, useForm } from 'vee-validate'
 import axios from 'axios'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+
+import {
+  mdiUpload,
+  mdiMagnify,
+  mdiImageOutline
+
+} from '@mdi/js'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
