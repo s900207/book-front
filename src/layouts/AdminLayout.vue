@@ -16,12 +16,19 @@ VMain(style="background-color:#D3D3D3")
 import { useUserStore } from '@/store/user'
 import { computed } from 'vue'
 
+import {
+  mdiBookArrowUp,
+  mdiBookSync,
+  mdiListBox
+
+} from '@mdi/js'
+
 const user = useUserStore()
 
 const navItems = [
-  { to: '/admin/import', text: '引入書籍', icon: 'mdi-book-arrow-up', show: true },
-  { to: '/admin/bookmanagement', text: '書籍管理', icon: 'mdi-book-sync' },
-  { to: '/admin/orders', text: '訂單管理', icon: 'mdi-list-box' },
+  { to: '/admin/import', text: '引入書籍', icon: mdiBookArrowUp, show: true },
+  { to: '/admin/bookmanagement', text: '書籍管理', icon: mdiBookSync },
+  { to: '/admin/orders', text: '訂單管理', icon: mdiListBox },
   // { to: '/admin/article', text: '文章管理', icon: 'mdi-book' },
   // { to: '/admin/report', text: '檢舉管理', icon: 'mdi-alert' },
   { to: '/', text: '回首頁', icon: 'mdi-home' }

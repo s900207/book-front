@@ -24,7 +24,7 @@ VAppBar(color="#4d4637")
       template(v-for="item in navItems" :key="item.to")
         VBtn(:to="item.to" :prepend-icon="item.icon" v-if="item.show") {{ item.text }}
           VBadge(color="error" :content="user.cart" v-if="item.to === '/cart'" floating)
-      VBtn(prepend-icon="mdi-logout" v-if="user.isLogin" @click="logout") 登出
+      VBtn(:prepend-icon="mdiLogout" v-if="user.isLogin" @click="logout") 登出
 VMain(style="background-color:#f6eee0")
   RouterView
 </template>
@@ -37,6 +37,17 @@ import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
 
+import {
+  mdiBookAccount,
+  mdiBook,
+  mdiCog,
+  mdiCart,
+  mdiListBox,
+  mdiAccountPlus,
+  mdiLogin,
+  mdiLogout
+} from '@mdi/js'
+
 const { apiAuth } = useApi()
 const router = useRouter()
 const createSnackbar = useSnackbar()
@@ -48,13 +59,13 @@ const drawer = ref(false)
 
 const navItems = computed(() => {
   return [
-    { to: '/mybook', text: '我的最愛書籍', icon: 'mdi-book-account', show: user.isLogin },
-    { to: '/article', text: '文章', icon: 'mdi-book', show: false },
-    { to: '/admin', text: '管理員管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin },
-    { to: '/cart', text: '購物車', icon: 'mdi-cart', show: true },
-    { to: '/orders', text: '訂單', icon: 'mdi-list-box', show: user.isLogin },
-    { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLogin },
-    { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin }
+    { to: '/mybook', text: '我的最愛書籍', icon: mdiBookAccount, show: user.isLogin },
+    { to: '/article', text: '文章', icon: mdiBook, show: false },
+    { to: '/admin', text: '管理員管理', icon: mdiCog, show: user.isLogin && user.isAdmin },
+    { to: '/cart', text: '購物車', icon: mdiCart, show: true },
+    { to: '/orders', text: '訂單', icon: mdiListBox, show: user.isLogin },
+    { to: '/register', text: '註冊', icon: mdiAccountPlus, show: !user.isLogin },
+    { to: '/login', text: '登入', icon: mdiLogin, show: !user.isLogin }
   ]
 })
 
