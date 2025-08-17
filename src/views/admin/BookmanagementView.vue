@@ -23,6 +23,7 @@
               v-model="tableSearch"
               @click:append="tableApplySearch"
               @keydown.enter="tableApplySearch"
+              class="mr-3"
             )
           template(#[`item.image`]="{ item }")
             VImg(:src="item.image" width="80" height="80" cover)

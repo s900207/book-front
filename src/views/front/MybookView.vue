@@ -23,6 +23,7 @@
               v-model="tableSearch"
               @click:append="tableApplySearch"
               @keydown.enter="tableApplySearch"
+              class="mr-3"
             )
 
             VAlert(
@@ -56,6 +57,10 @@
               color="#4d4637 darken-3"
               size="20"
             )
+
+          template(v-slot:[`item.userReview`]="{ item }")
+            .text-left.pa-2(style="max-width: 300px;")
+              p.text-body-2.mb-0 {{ getUserReview(item) }}
 </template>
 
 <script setup>
@@ -83,7 +88,7 @@ const tableLoading = ref(false)
 const tableSearch = ref('')
 
 // 常量
-const MAX_CHARS = 55
+const MAX_CHARS = 100
 const BATCH_SIZE = 3
 const RETRY_DELAY = 100
 
@@ -107,7 +112,9 @@ const getImageSrc = (item) => {
 const getUserRating = (item) => {
   const reviews = item?.result?.reviews || item?.reviews || []
   const userReview = reviews.find(review =>
-    review.user?.$oid === user.value || review.user === user.value
+    review.user?._id === user._id ||
+    review.user?.$oid === user._id ||
+    review.user === user._id
   )
   return userReview?.rating || 0
 }
@@ -115,18 +122,19 @@ const getUserRating = (item) => {
 const getUserReview = (item) => {
   const reviews = item?.result?.reviews || item?.reviews || []
   const userReview = reviews.find(review =>
-    review.user?.$oid === user.value || review.user === user.value
+    review.user?._id === user._id ||
+    review.user?.$oid === user._id ||
+    review.user === user._id
   )
 
   if (userReview?.comment) {
-    const review = userReview.comment
-    const paragraphs = []
-    for (let i = 0; i < review.length; i += MAX_CHARS) {
-      paragraphs.push(review.substring(i, i + MAX_CHARS))
+    const comment = userReview.comment.toString()
+    if (comment.length > MAX_CHARS) {
+      return comment.substring(0, MAX_CHARS) + '...'
     }
-    return paragraphs.join('\n')
+    return comment
   }
-  return '未提供書評'
+  return '尚未撰寫書評'
 }
 
 // 表格標題
@@ -137,17 +145,16 @@ const tableHeaders = [
   { title: '出版者', align: 'center', sortable: true, key: 'result.publisher' },
   { title: '分類', align: 'center', sortable: true, key: 'result.categories' },
   {
-    title: '評分(1-5)',
+    title: '我的評分',
     align: 'center',
     sortable: false,
     key: 'starRating'
   },
   {
-    title: '書評',
+    title: '我的書評',
     align: 'center',
     sortable: false,
-    key: 'result.review',
-    value: getUserReview
+    key: 'userReview'
   }
 ]
 
@@ -357,10 +364,14 @@ defineExpose({
 
 <style scoped>
 .v-data-table {
-  background: transparent;
+  background: white;
 }
 
 .v-skeleton-loader {
   background: #f5f5f5;
+}
+
+.text-body-2 {
+  word-break: break-word;
 }
 </style>

@@ -1,16 +1,16 @@
 <template lang="pug">
-VNavigationDrawer(permanent color="#808080")
-  VList
-    VListItem(:prepend-avatar :title="user.account")
-  VDivider
-  VList
-    VListItem(
-      v-for="item in navItems" :key="item.to"
-      :to="item.to" :title="item.text" :prepend-icon="item.icon"
-    )
-VMain(style="background-color:#D3D3D3")
-  RouterView
-</template>
+  VNavigationDrawer(permanent color="#808080")
+    VList
+      VListItem(:prepend-avatar="prependAvatar" :title="user.account")
+    VDivider
+    VList
+      VListItem(
+        v-for="item in navItems" :key="item.to"
+        :to="item.to" :title="item.text" :prepend-icon="item.icon"
+      )
+  VMain(style="background-color:#D3D3D3")
+    RouterView
+  </template>
 
 <script setup>
 import { useUserStore } from '@/store/user'
@@ -21,7 +21,6 @@ import {
   mdiBookSync,
   mdiListBox,
   mdiHome
-
 } from '@mdi/js'
 
 const user = useUserStore()
@@ -36,6 +35,7 @@ const navItems = [
 ]
 
 const prependAvatar = computed(() => {
-  return `https://source.boringavatars.com/beam/120/${user.account}?colors=4EB3DE,8DE0A6,FCF09F,F27C7C,DE528C`
+  const hash = btoa(user.account).slice(0, 32)
+  return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=120`
 })
 </script>
