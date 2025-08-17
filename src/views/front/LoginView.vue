@@ -18,7 +18,7 @@ VContainer
           minlength="4" maxlength="20" counter
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
-          :prepend-icon="mdikey"
+          :prepend-icon="mdiKey"
         )
         VBtn(type="submit" color="#4d4637") 登入
 </template>
@@ -33,7 +33,7 @@ import { useUserStore } from '@/store/user'
 
 import {
   mdiAccount,
-  mdikey
+  mdiKey
 } from '@mdi/js'
 
 const { api } = useApi()
