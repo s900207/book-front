@@ -11,7 +11,7 @@ VNavigationDrawer(v-model="drawer" temporary location="right" v-if="isMobile" st
         VListItemTitle {{ item.text }}
     VListItem(v-if="user.isLogin" @click="logout")
       template(#prepend)
-        VIcon(icon="mdi-logout")
+        VIcon(:icon="mdiLogout")
       VListItemTitle 登出
 VAppBar(color="#4d4637")
   VContainer.d-flex.align-center

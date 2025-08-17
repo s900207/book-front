@@ -36,6 +36,19 @@ const createSnackbar = useSnackbar()
 const user = useUserStore()
 const router = useRouter()
 
+if (!user.isLogin) {
+  createSnackbar({
+    text: '請先登入才能查看購物車',
+    showCloseButton: false,
+    snackbarProps: {
+      timeout: 2000,
+      color: 'red',
+      location: 'bottom'
+    }
+  })
+  router.push('/login')
+}
+
 const cart = ref([])
 const headers = [
   {
@@ -131,6 +144,9 @@ const checkout = async () => {
 }
 
 onMounted(async () => {
+  if (!user.isLogin) {
+    return
+  }
   try {
     const { data } = await apiAuth.get('/users/cart')
     cart.value.push(...data.result)
