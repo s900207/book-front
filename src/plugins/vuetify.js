@@ -3,6 +3,7 @@
  *
  * Framework documentation: https://vuetifyjs.com`
  */
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 // Styles
 import 'vuetify/styles'
@@ -29,6 +30,10 @@ export default createVuetify({
     messages: { zhHant }
   },
   icons: {
-    defaultSet: 'mdi'
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
   }
 })

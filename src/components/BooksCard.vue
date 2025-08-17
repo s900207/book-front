@@ -1,6 +1,5 @@
 <template lang="pug">
   VCard.books-card( width="250px" height="380px" class="hover-card")
-    // 成人內容標籤
     .mature-badge(v-if="maturityRating === 'MATURE'")
       span.mature-text 18+
     RouterLink(:to="'/books/' + _id")
@@ -17,9 +16,9 @@
     VCardActions
       VRow.justify-center.align-center
         VCol(cols="6")
-          VBtn(:prepend-icon="isFavorite ? 'mdi-heart-minus' : 'mdi-heart-plus'" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite" class="btn") {{ isFavorite ? '取消最愛' : '加入最愛' }}
+          VBtn(:prepend-icon="isFavorite ? mdiHeartMinus : mdiHeartPlus" :color="isFavorite ? 'red' : 'blue'" @click="addFavorite" class="btn") {{ isFavorite ? '取消最愛' : '加入最愛' }}
         VCol(cols="6")
-          VBtn(color="primary" prepend-icon="mdi-cart" @click="addCart" class="btn") 加入購物車
+          VBtn(color="primary" :prepend-icon="mdiCart" @click="addCart" class="btn") 加入購物車
   </template>
 
   <style scoped>
@@ -114,6 +113,12 @@ import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+
+import {
+  mdiHeartPlus,
+  mdiHeartMinus,
+  mdiCart
+} from '@mdi/js'
 
 const { apiAuth } = useApi()
 

@@ -32,7 +32,8 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router'],
-          'vuetify-vendor': ['vuetify']
+          'vuetify-vendor': ['vuetify'],
+          icons: ['@mdi/js']
         }
       }
     }
