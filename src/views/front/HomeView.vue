@@ -110,11 +110,10 @@
     color: #4CAF50;
   }
 
-  /* 使用純 CSS 動畫 */
   .book-wrapper {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .book-wrapper.animate-in {
