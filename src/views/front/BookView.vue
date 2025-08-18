@@ -101,7 +101,18 @@ const getGravatarUrl = (userAccount) => {
   if (!userAccount) {
     return 'https://www.gravatar.com/avatar/default?d=identicon&s=120'
   }
-  const hash = btoa(userAccount).slice(0, 32)
+
+  const simpleHash = (str) => {
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash
+    }
+    return Math.abs(hash).toString(16)
+  }
+
+  const hash = simpleHash(userAccount.toLowerCase().trim())
   return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=120`
 }
 
