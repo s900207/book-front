@@ -23,8 +23,9 @@
             .adult-badge(v-if="showAll")
               span.adult-text 18+
     VRow
-      VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="books in books" :key="books._id")
-        BooksCard(v-bind="books")
+      VCol.d-flex.justify-center(cols="12" md="4" xl="2" v-for="(book, index) in books" :key="book._id")
+        .book-wrapper(:class="{ 'animate-in': booksLoaded }" :style="{ animationDelay: `${index * 0.1}s` }")
+          BooksCard(v-bind="book")
   </template>
 
   <style scoped>
@@ -108,6 +109,18 @@
   .adult-switch-container[data-tooltip="隱藏成人內容"]::after {
     color: #4CAF50;
   }
+
+  /* 使用純 CSS 動畫 */
+  .book-wrapper {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .book-wrapper.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
   </style>
 
 <script setup>
@@ -115,7 +128,6 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import BooksCard from '@/components/BooksCard.vue'
-import gsap from 'gsap'
 
 import {
   mdiShieldCheck,
@@ -128,9 +140,12 @@ const createSnackbar = useSnackbar()
 const books = ref([])
 const searchTerm = ref('')
 const showAll = ref(false)
+const booksLoaded = ref(false)
 
 const fetchBooks = async () => {
   try {
+    booksLoaded.value = false
+
     const { data } = await api.get('/books', {
       params: {
         search: searchTerm.value
@@ -147,7 +162,9 @@ const fetchBooks = async () => {
     books.value = filteredBooks
 
     await nextTick()
-    gsap.to('.books-card', { opacity: 1, duration: 0.5 })
+    setTimeout(() => {
+      booksLoaded.value = true
+    }, 100)
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -170,8 +187,3 @@ onMounted(() => {
 watch([searchTerm, showAll], fetchBooks)
 
 </script>
-
-  <style scoped lang="sass">
-  .books-card
-    opacity: 0
-  </style>
