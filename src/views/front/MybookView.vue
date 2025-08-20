@@ -109,23 +109,44 @@ const getImageSrc = (item) => {
   return item?.result?.image || item?.image || '/placeholder-book.jpg'
 }
 
+const getCurrentUserId = () => {
+  try {
+    if (!user.token) return null
+
+    const tokenParts = user.token.split('.')
+    if (tokenParts.length !== 3) return null
+
+    const payload = JSON.parse(atob(tokenParts[1]))
+    return payload._id || payload.id || payload.userId
+  } catch (error) {
+    return null
+  }
+}
+
 const getUserRating = (item) => {
   const reviews = item?.result?.reviews || item?.reviews || []
-  const userReview = reviews.find(review =>
-    review.user?._id === user._id ||
-    review.user?.$oid === user._id ||
-    review.user === user._id
-  )
+  const currentUserId = getCurrentUserId()
+
+  if (!currentUserId || !reviews.length) return 0
+
+  const userReview = reviews.find(review => {
+    const reviewUserId = review.user?.$oid || review.user?._id || review.user?.id || review.user
+    return String(reviewUserId) === String(currentUserId)
+  })
+
   return userReview?.rating || 0
 }
 
 const getUserReview = (item) => {
   const reviews = item?.result?.reviews || item?.reviews || []
-  const userReview = reviews.find(review =>
-    review.user?._id === user._id ||
-    review.user?.$oid === user._id ||
-    review.user === user._id
-  )
+  const currentUserId = getCurrentUserId()
+
+  if (!currentUserId || !reviews.length) return '尚未撰寫書評'
+
+  const userReview = reviews.find(review => {
+    const reviewUserId = review.user?.$oid || review.user?._id || review.user?.id || review.user
+    return String(reviewUserId) === String(currentUserId)
+  })
 
   if (userReview?.comment) {
     const comment = userReview.comment.toString()
@@ -136,7 +157,6 @@ const getUserReview = (item) => {
   }
   return '尚未撰寫書評'
 }
-
 // 表格標題
 const tableHeaders = [
   { title: '圖片', align: 'center', sortable: false, key: 'image' },
