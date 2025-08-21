@@ -1,42 +1,47 @@
 <template lang="pug">
-VContainer
-  VRow.text-center
-    VCol(cols="12")
-      h1 註冊
-    VDivider
-    VCol(cols="12")
-      VForm(:disabled="isSubmitting" @submit.prevent="submit")
-        VTextField(
-          label="帳號"
-          minlength="4" maxlength="20" counter
-          v-model="account.value.value"
-          :error-messages="account.errorMessage.value"
-          :prepend-icon="mdiAccount"
-        )
-        VTextField(
-          label="信箱" type="email"
-          v-model="email.value.value"
-          :error-messages="email.errorMessage.value"
-          :prepend-icon="mdiMail"
-        )
-        VTextField(
-          label="密碼" type="password"
-          minlength="4" maxlength="20" counter
-          v-model="password.value.value"
-          :error-messages="password.errorMessage.value"
-          :prepend-icon="mdiKey"
-        )
-        VTextField(
-          label="確認密碼" type="password"
-          minlength="4" maxlength="20" counter
-          v-model="passwordConfirm.value.value"
-          :error-messages="passwordConfirm.errorMessage.value"
-          :prepend-icon="mdiKeyChange"
-        )
-        VBtn(type="submit" color="#4d4637") 註冊
-</template>
+  VContainer
+    VRow.text-center
+      VCol(cols="12")
+        h1 註冊
+      VDivider
+      VCol(cols="12")
+        VForm(:disabled="isSubmitting" @submit.prevent="submit")
+          VTextField(
+            label="帳號"
+            minlength="4" maxlength="20" counter
+            v-model="account.value.value"
+            :error-messages="account.errorMessage.value"
+            :prepend-icon="mdiAccount"
+          )
+          VTextField(
+            label="信箱" type="email"
+            v-model="email.value.value"
+            :error-messages="email.errorMessage.value"
+            :prepend-icon="mdiMail"
+          )
+          VTextField(
+            label="密碼" :type="showPassword ? 'text' : 'password'"
+            minlength="4" maxlength="20" counter
+            v-model="password.value.value"
+            :error-messages="password.errorMessage.value"
+            :prepend-icon="mdiKey"
+            :append-inner-icon="showPassword?mdiEyeOff:mdiEye"
+            @click:append-inner="showPassword=!showPassword"
+          )
+          VTextField(
+            label="確認密碼" :type="showPasswordConfirm ? 'text' : 'password'"
+            minlength="4" maxlength="20" counter
+            v-model="passwordConfirm.value.value"
+            :error-messages="passwordConfirm.errorMessage.value"
+            :prepend-icon="mdiKeyChange"
+            :append-inner-icon="showPasswordConfirm?mdiEyeOff:mdiEye"
+            @click:append-inner="showPasswordConfirm = !showPasswordConfirm"
+          )
+          VBtn(type="submit" color="#4d4637") 註冊
+  </template>
 
 <script setup>
+import { ref } from 'vue'
 import validator from 'validator'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
@@ -48,13 +53,18 @@ import {
   mdiAccount,
   mdiMail,
   mdiKey,
-  mdiKeyChange
+  mdiKeyChange,
+  mdiEyeOff,
+  mdiEye
 } from '@mdi/js'
 
 const { api } = useApi()
 
 const router = useRouter()
 const createSnackbar = useSnackbar()
+
+const showPassword = ref(false)
+const showPasswordConfirm = ref(false)
 
 // 定義註冊表單的資料格式
 const schema = yup.object({
@@ -66,7 +76,7 @@ const schema = yup.object({
   email: yup
     .string()
     .required('信箱為必填欄位')
-  // .test(自訂驗證名稱, 錯誤訊息, 驗證function)
+    // .test(自訂驗證名稱, 錯誤訊息, 驗證function)
     .test(
       'isEmail', '信箱格式錯誤',
       (value) => {
@@ -83,9 +93,9 @@ const schema = yup.object({
     .required('密碼為必填欄位')
     .min(4, '密碼長度不符')
     .max(20, '密碼長度不符')
-  // .oneOf 只允許符合陣列內其中一個值
-  // .oneOf(陣列, 錯誤訊息)
-  // .ref('password') 代表這個 schema 的 password 欄位值
+    // .oneOf 只允許符合陣列內其中一個值
+    // .oneOf(陣列, 錯誤訊息)
+    // .ref('password') 代表這個 schema 的 password 欄位值
     .oneOf([yup.ref('password')], '密碼不一致')
 })
 

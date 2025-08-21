@@ -1,17 +1,19 @@
 <template lang="pug">
-VContainer
-  VRow
-    VCol(cols="12")
-      h1 訂單
-    VCol(cols="12")
-      VDataTable(:items="orders" :headers="headers")
-        template(#[`item.createdAt`]="{ item }")
-          | {{ new Date(item.createdAt).toLocaleString() }}
-        template(#[`item.cart`]="{ item }")
-          ul
-            li(v-for="cart in item.cart" :key="cart._id")
-              | {{ cart.book.title }} * {{ cart.quantity }}
-</template>
+  VContainer
+    VRow
+      VCol(cols="12")
+        h1 所有訂單
+      VCol(cols="12")
+        VDataTable(:items="orders" :headers="headers")
+          template(#[`item.createdAt`]="{ item }")
+            | {{ new Date(item.createdAt).toLocaleString() }}
+          template(#[`item.user`]="{ item }")
+            | {{ item.user?.account || '未知用戶' }}
+          template(#[`item.cart`]="{ item }")
+            ul
+              li(v-for="cart in item.cart" :key="cart._id")
+                | {{ cart.book.title }} * {{ cart.quantity }}
+  </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -24,6 +26,7 @@ const createSnackbar = useSnackbar()
 const orders = ref([])
 const headers = [
   { title: '訂單編號', key: '_id' },
+  { title: '用戶', key: 'user' },
   { title: '日期', key: 'createdAt' },
   { title: '商品', key: 'cart', sortable: false },
   {
@@ -40,7 +43,7 @@ const headers = [
 
 onMounted(async () => {
   try {
-    const { data } = await apiAuth.get('/orders')
+    const { data } = await apiAuth.get('/orders/all')
     orders.value.push(...data.result)
   } catch (error) {
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

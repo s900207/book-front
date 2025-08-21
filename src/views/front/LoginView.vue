@@ -1,29 +1,33 @@
 <template lang="pug">
-VContainer
-  VRow.text-center
-    VCol(cols="12")
-      h1 登入
-    VDivider
-    VCol(cols="12")
-      VForm(:disabled="isSubmitting" @submit.prevent="submit")
-        VTextField(
-          label="帳號"
-          minlength="4" maxlength="20" counter
-          v-model="account.value.value"
-          :error-messages="account.errorMessage.value"
-          :prepend-icon="mdiAccount"
-        )
-        VTextField(
-          label="密碼" type="password"
-          minlength="4" maxlength="20" counter
-          v-model="password.value.value"
-          :error-messages="password.errorMessage.value"
-          :prepend-icon="mdiKey"
-        )
-        VBtn(type="submit" color="#4d4637") 登入
-</template>
+  VContainer
+    VRow.text-center
+      VCol(cols="12")
+        h1 登入
+      VDivider
+      VCol(cols="12")
+        VForm(:disabled="isSubmitting" @submit.prevent="submit")
+          VTextField(
+            label="帳號"
+            minlength="4" maxlength="20" counter
+            v-model="account.value.value"
+            :error-messages="account.errorMessage.value"
+            :prepend-icon="mdiAccount"
+          )
+          VTextField(
+            label="密碼"
+            :type="showPassword ? 'text' : 'password'"
+            minlength="4" maxlength="20" counter
+            v-model="password.value.value"
+            :error-messages="password.errorMessage.value"
+            :prepend-icon="mdiKey"
+            :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+            @click:append-inner="showPassword = !showPassword"
+          )
+          VBtn(type="submit" color="#4d4637") 登入
+  </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
@@ -33,7 +37,9 @@ import { useUserStore } from '@/store/user'
 
 import {
   mdiAccount,
-  mdiKey
+  mdiKey,
+  mdiEye,
+  mdiEyeOff
 } from '@mdi/js'
 
 const { api } = useApi()
@@ -43,7 +49,8 @@ const createSnackbar = useSnackbar()
 
 const user = useUserStore()
 
-// 定義註冊表單的資料格式
+const showPassword = ref(false)
+
 const schema = yup.object({
   account: yup
     .string()
