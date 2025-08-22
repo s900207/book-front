@@ -1,6 +1,5 @@
 <template lang="pug">
-  // 載入畫面覆蓋層
-  VOverlay(v-model="isLoading" class="loading-overlay" persistent)
+  VOverlay(v-model="shouldShowLoading" class="loading-overlay" persistent)
     .loading-container
       .loading-content
         .loading-text {{ loadingProgress }}% Loading...
@@ -14,7 +13,7 @@
             placeholder="請輸入書籍名稱"
             :prepend-inner-icon="mdiMagnify"
             v-model="searchTerm"
-            :disabled="isLoading"
+            :disabled="shouldShowLoading"
           )
       VCol(cols="2" md="1" class="d-flex mt-2 justify-end")
         .adult-switch-container.mt-5.d-flex.align-center
@@ -24,7 +23,7 @@
             :color="showAll ? 'red' : 'green'"
             hide-details
             density="compact"
-            :disabled="isLoading"
+            :disabled="shouldShowLoading"
           )
           .switch-indicators.ml-2
             VIcon(v-if="!showAll" color="green" size="small" :icon="mdiShieldCheck")
@@ -171,42 +170,45 @@ import {
 const { api } = useApi()
 const createSnackbar = useSnackbar()
 
+if (!window.hasShownInitialLoading) {
+  window.hasShownInitialLoading = false
+}
+
 const books = ref([])
 const searchTerm = ref('')
 const showAll = ref(false)
 const booksLoaded = ref(false)
-const isLoading = ref(false)
+const shouldShowLoading = ref(!window.hasShownInitialLoading)
 const loadingProgress = ref(0)
+let progressTimer = null
 
-// 模擬進度條更新
-const updateLoadingProgress = (targetProgress) => {
-  const increment = 2
-  const timer = setInterval(() => {
-    if (loadingProgress.value < targetProgress) {
+// 模擬載入進度
+const simulateLoading = () => {
+  loadingProgress.value = 0
+  const increment = 1
+  const speed = 30
+
+  progressTimer = setInterval(() => {
+    if (loadingProgress.value < 100) {
       loadingProgress.value += increment
     } else {
-      clearInterval(timer)
+      clearInterval(progressTimer)
+      setTimeout(() => {
+        window.hasShownInitialLoading = true
+        shouldShowLoading.value = false
+        fetchBooks()
+      }, 500)
     }
-  }, 50)
+  }, speed)
 }
 
 const fetchBooks = async () => {
   try {
-    // 開始載入
-    isLoading.value = true
-    loadingProgress.value = 0
-    booksLoaded.value = false
-
-    // 模擬載入步驟
-    updateLoadingProgress(30)
-
     const { data } = await api.get('/books', {
       params: {
         search: searchTerm.value
       }
     })
-
-    updateLoadingProgress(60)
 
     const filteredBooks = data.result.data.reduce((acc, book) => {
       if (showAll.value || book.maturityRating === 'NOT_MATURE') {
@@ -215,29 +217,16 @@ const fetchBooks = async () => {
       return acc
     }, [])
 
-    updateLoadingProgress(80)
-
     books.value = filteredBooks
 
     await nextTick()
 
-    updateLoadingProgress(100)
-
-    // 完成後等待一下再隱藏載入畫面
     setTimeout(() => {
-      isLoading.value = false
-      loadingProgress.value = 0
-      setTimeout(() => {
-        booksLoaded.value = true
-      }, 100)
-    }, 500)
+      booksLoaded.value = true
+    }, 100)
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-
-    // 錯誤時也要隱藏載入畫面
-    isLoading.value = false
-    loadingProgress.value = 0
 
     createSnackbar({
       text,
@@ -252,8 +241,17 @@ const fetchBooks = async () => {
 }
 
 onMounted(() => {
-  fetchBooks()
+  if (!window.hasShownInitialLoading) {
+    simulateLoading()
+  } else {
+    fetchBooks()
+  }
 })
 
-watch([searchTerm, showAll], fetchBooks)
+watch([searchTerm, showAll], () => {
+  if (!shouldShowLoading.value) {
+    booksLoaded.value = false
+    fetchBooks()
+  }
+})
 </script>
