@@ -32,9 +32,15 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router'],
-          'vuetify-vendor': ['vuetify'],
-          icons: ['@mdi/js']
+          'vuetify-vendor': ['vuetify']
         }
+      }
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
       }
     }
   }
