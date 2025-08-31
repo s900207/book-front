@@ -158,7 +158,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory('/book-front/'),
+  history: createWebHashHistory(),
   routes
 })
 
