@@ -28,19 +28,16 @@ export default defineConfig({
     port: 3000
   },
   build: {
+    minify: 'esbuild',
+    esbuild: {
+      drop: ['console', 'debugger']
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router'],
           'vuetify-vendor': ['vuetify']
         }
-      }
-    },
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
       }
     }
   }
