@@ -2,6 +2,7 @@ import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import compression from 'vite-plugin-compression'
 
 export default defineConfig({
   base: '/book-front/',
@@ -11,10 +12,14 @@ export default defineConfig({
     }),
     vuetify({
       autoImport: true,
-      // 關鍵：禁用字體自動預載
       theme: {
         defaultTheme: 'light'
       }
+    }),
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      deleteOriginFile: false
     })
   ],
   define: { 'process.env': {} },
