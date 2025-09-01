@@ -3,6 +3,7 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import compression from 'vite-plugin-compression'
+import viteImagemin from 'vite-plugin-imagemin'
 
 export default defineConfig({
   base: '/book-front/',
@@ -15,6 +16,13 @@ export default defineConfig({
       theme: {
         defaultTheme: 'light'
       }
+    }),
+    viteImagemin({
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      optipng: { optimizationLevel: 7 },
+      mozjpeg: { quality: 75 },
+      pngquant: { quality: [0.7, 0.9], speed: 4 },
+      svgo: { plugins: [{ name: 'removeViewBox' }] }
     }),
     compression({
       algorithm: 'brotliCompress',
