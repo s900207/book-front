@@ -208,9 +208,6 @@ const fetchBooks = async () => {
       params: {
         search: searchTerm.value,
         _t: Date.now()
-      },
-      headers: {
-        'Cache-Control': 'no-cache'
       }
     })
 

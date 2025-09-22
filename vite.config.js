@@ -38,14 +38,7 @@ export default defineConfig({
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
   },
   server: {
-    port: 3000,
-    proxy: {
-      '/books': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        rewrite: path => path
-      }
-    }
+    port: 3000
   },
   build: {
     minify: 'esbuild',
