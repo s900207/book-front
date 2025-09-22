@@ -206,7 +206,8 @@ const fetchBooks = async () => {
   try {
     const { data } = await api.get('/books', {
       params: {
-        search: searchTerm.value
+        search: searchTerm.value,
+        _t: Date.now()
       }
     })
 
